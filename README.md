@@ -5,7 +5,8 @@
 
 Engine is based on SDL2.    
 You need to copy the `core.c` and `core.h` files to your working directory and then link project with SDL2. 
-Written in Visual C11. Example code of main file:
+Written in Visual C11.    
+Example code of main file:
 ```
 #include "core.h"
 
