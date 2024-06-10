@@ -1,10 +1,11 @@
 # ASCII-Engine
 ## Tiny engine and C11 library for terminal graphics 
+### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from EGA palette.
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/1.PNG)
 
 Engine based on SDL2.    
 You need copy ```core.c``` and ```core.h``` files to your work directory.   
-Written in VC, C11. Example code of main file:
+Written in VC11. Example code of main file:
 ```
 #include "core.h"
 
