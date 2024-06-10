@@ -14,7 +14,7 @@ unsigned char init_game() { return 0; }
 void input_game(SDL_Scancode key) {}
 
 void update_core(struct Core* core) {
-	set_tile(core, '@', INDEX_YELLOW, 2, 0);
+	set_tile(core, '@', INDEX_BRIGHT_YELLOW, 2, 0);
 }
 
 void shutdown_game() {}
