@@ -1,6 +1,6 @@
 # ASCII-Engine
 ## Tiny engine and C11 library for terminal graphics 
-### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from EGA palette.
+### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from [EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#:~:text=Default%20EGA%2016%2Dcolor%20palette%2C%20matching%20CGA%20colors).
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/1.PNG)
 
 Engine is based on SDL2.    
