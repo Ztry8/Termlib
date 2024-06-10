@@ -1,22 +1,22 @@
 #pragma once
 #include <SDL.h>
 
-#define INDEX_BLACK 0
-#define INDEX_GRAY 1 
-#define INDEX_WHITE 2
-#define INDEX_RED 3
-#define INDEX_CORAL 4
-#define INDEX_ORANGE 5
-#define INDEX_GREEN 6
-#define INDEX_DARK_GREEN 7
-#define INDEX_FOREST_GREEN 8
-#define INDEX_BLUE 9
-#define INDEX_CYAN 10
-#define INDEX_AQUA 11
-#define INDEX_EMERALD 12
-#define INDEX_YELLOW 13
-#define INDEX_PINK 14
-#define INDEX_PURPLE 15
+#define BLACK 0
+#define BLUE 1
+#define GREEN 2
+#define CYAN 3
+#define RED 4
+#define MAGENTA 5
+#define BROWN 6
+#define LIGHT_GRAY 7
+#define DARK_GRAY 8
+#define BRIGHT_BLUE 9
+#define BRIGHT_GREEN 10
+#define BRIGHT_CYAN 11
+#define BRIGHT_RED 12
+#define BRIGHT_MAGENTA 13
+#define BRIGHT_YELLOW 14
+#define BRIGHT_WHITE 15
 
 // size of one tile in px 
 #define TILE_W 8 
