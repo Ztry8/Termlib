@@ -29,4 +29,5 @@ int main(int argc, char* args[]) {
 ```
 
 ### TODO:
-#### Change color system
+- [x] Change color system
+- [ ] Change screenshot
