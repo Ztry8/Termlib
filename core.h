@@ -3,25 +3,14 @@
 #include <stdio.h>
 #include "EGA8x8.h"
 
-// scale of graphics
 #define SCALE 2
+// size of one tile in px 
+#define TILE_W 8 
+#define TILE_H 8
 
-const unsigned char BLACK[3] = { 0, 0, 0 };		
-const unsigned char BLUE[3] = { 0, 0, 170 };	
-const unsigned char GREEN[3] = { 0, 170, 0 };	
-const unsigned char CYAN[3] = { 0, 170, 170 };	
-const unsigned char RED[3] = { 170, 0, 0 };	
-const unsigned char MAGENTA[3] = { 170, 0, 170 };
-const unsigned char BROWN[3] = { 170, 85, 0 };
-const unsigned char LIGHT_GRAY[3] = { 170, 170, 170 };	
-const unsigned char DARK_GRAY[3] = { 85, 85, 85 };	
-const unsigned char BRIGHT_BLUE[3] = { 85, 85, 255 };	
-const unsigned char BRIGHT_GREEN[3] = { 85, 255, 85 };	
-const unsigned char BRIGHT_CYAN[3] = { 85, 255, 255 };	
-const unsigned char BRIGHT_RED[3] = { 255, 85, 85 };
-const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
-const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
-const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
+// size of window's screen in tiles 
+#define WIDTH 80
+#define HEIGHT 43
 
 #define INDEX_BLACK 0
 #define INDEX_BLUE 1
@@ -40,13 +29,22 @@ const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
 #define INDEX_BRIGHT_YELLOW 14
 #define INDEX_BRIGHT_WHITE 15
 
-// size of one tile in px 
-#define TILE_W 8 
-#define TILE_H 8
-
-// size of window's screen in tiles 
-#define WIDTH 80
-#define HEIGHT 43
+const unsigned char BLACK[3] = { 0, 0, 0 };		
+const unsigned char BLUE[3] = { 0, 0, 170 };	
+const unsigned char GREEN[3] = { 0, 170, 0 };	
+const unsigned char CYAN[3] = { 0, 170, 170 };	
+const unsigned char RED[3] = { 170, 0, 0 };	
+const unsigned char MAGENTA[3] = { 170, 0, 170 };
+const unsigned char BROWN[3] = { 170, 85, 0 };
+const unsigned char LIGHT_GRAY[3] = { 170, 170, 170 };	
+const unsigned char DARK_GRAY[3] = { 85, 85, 85 };	
+const unsigned char BRIGHT_BLUE[3] = { 85, 85, 255 };	
+const unsigned char BRIGHT_GREEN[3] = { 85, 255, 85 };	
+const unsigned char BRIGHT_CYAN[3] = { 85, 255, 255 };	
+const unsigned char BRIGHT_RED[3] = { 255, 85, 85 };
+const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
+const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
+const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
 
 struct Core {
 	SDL_Window* window;
@@ -85,7 +83,7 @@ unsigned char init_core(struct Core* core) {
 		return 1;
 	}
 
-	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_ACCELERATED);
 	if (core->renderer == NULL) {
 		char buffer[128];
 		sprintf_s(buffer, 128, "Renderer couldn't be created!\nError: %s", SDL_GetError());
