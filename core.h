@@ -4,6 +4,7 @@
 #include "EGA8x8.h"
 
 #define SCALE 2
+
 // size of one tile in px 
 #define TILE_W 8 
 #define TILE_H 8
@@ -1076,12 +1077,11 @@ struct Core {
 
 unsigned char init_game();
 void input_game(SDL_Scancode);
-void update_core(struct Core*);
+void update_game(struct Core*);
 void shutdown_game();
 
 unsigned char init_core(struct Core* core) {
-	SDL_DisplayMode displayMode;
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
 		char buffer[128];
 		sprintf_s(buffer, 128, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
@@ -1093,7 +1093,11 @@ unsigned char init_core(struct Core* core) {
 	SDL_SetHint(SDL_HINT_APP_NAME, "Engine");
 	SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
 	SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
-	SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
+	#ifdef VSYNC
+		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
+	#else 
+		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
+	#endif
 	SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
 
 	core->window = SDL_CreateWindow("Province", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -1184,7 +1188,7 @@ void run_core(struct Core* core) {
 		}
 
 		SDL_RenderClear(core->renderer);
-		update_core(core);
+		update_game(core);
 		SDL_RenderPresent(core->renderer);
 
 		unsigned long long end = SDL_GetPerformanceCounter();
