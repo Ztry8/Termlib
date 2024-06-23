@@ -9,7 +9,7 @@ You just need to copy the `core.h` file to your working directory and then link 
 Written in Visual C++ 11, but also usable with other standards and compilers.
 
 #### About engine
-!Please don't change the size of the tiles is `#define`s. This could disrupt the engine's logic. Only modify tile size if you are using a custom font!
+##### Please don't change the size of the tiles is `#define`s. This could disrupt the engine's logic. Only modify tile size if you are using a custom font!
 The engine uses batching for rendering tiles, but tile culling has not been implemented yet. See the TODO list.   
 Use the `SCALE` to set the correct scale for your graphics.   
 `SCALE` = 1: 640x344 resolution,   
