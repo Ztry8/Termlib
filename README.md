@@ -8,8 +8,14 @@ Engine is based on SDL2.
 You just need to copy the `core.h` file to your working directory and then link project with SDL2.   
 Written in Visual C11. 
 
-#### About graphics
+#### About engine
+The engine uses batching for rendering tiles, but tile culling has not been implemented yet. See the TODO list.   
+Use the `SCALE` to set the correct scale for your graphics.   
+`SCALE` = 1: 640x344 resolution,   
+`SCALE` = 2: 1280x688 resolution, etc.
 
+It has vsync only as a frame rate cap, graphics API provided by SDL2. The font used for graphics is built into the header code.
+It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
 #### Using
 Firstly, include the header file. Then, write the functions:   
@@ -18,6 +24,7 @@ Firstly, include the header file. Then, write the functions:
 `update_game(struct Core* core)` used for processing graphics and is called every frame.   
 `shutdown_game()` used for free up resources in your game.   
 
+Called functions:
 `set_tile(struct Core*, char, unsigned char, long, long)` used for displaying and drawing tiles.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
@@ -52,3 +59,4 @@ int main(int argc, char* args[]) {
 
 ### TODO:
 - [ ] Change the colour system to make it more user-friendly and efficient.
+- [ ] Add tile culling.
