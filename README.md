@@ -9,7 +9,7 @@ You just need to copy the `core.h` file to your working directory and then link 
 Written in Visual C++ 11, but also usable with other standards and compilers.
 
 #### About engine
-##### Please don't change the size of the tiles is `#define`s. This could disrupt the engine's logic. Only modify tile size if you are using a custom font!
+##### Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
 The engine uses batching for rendering tiles, but tile culling has not been implemented yet. See the TODO list.   
 The window closes when you press the Esc key, but not when you press Alt+F4 (this only works on Windows).
 It has vsync only as a frame rate cap and display fps on window's title, graphics API provided by SDL2. The font used for graphics is built into the header code.
