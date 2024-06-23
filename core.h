@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include "EGA8x8.h"
 
-#define SCALE 2
-
 // size of one tile in px 
 #define TILE_W 8 
 #define TILE_H 8
