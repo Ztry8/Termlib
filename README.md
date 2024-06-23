@@ -14,6 +14,7 @@ Use the `SCALE` to set the correct scale for your graphics.
 `SCALE` = 1: 640x344 resolution,   
 `SCALE` = 2: 1280x688 resolution, etc.
 
+The window closes when you press the Esc key, but not when you press Alt+F4 (this only works on Windows).
 It has vsync only as a frame rate cap, graphics API provided by SDL2. The font used for graphics is built into the header code.
 It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
