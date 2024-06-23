@@ -26,7 +26,7 @@ Firstly, include the header file. Then, write the functions:
 `update_game(struct Core* core)` used for processing graphics and is called every frame.   
 `shutdown_game()` used for free up resources in your game.   
 
-Called functions:
+Called function:   
 `set_tile(struct Core*, char, unsigned char, long, long)` used for displaying and drawing tiles.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
