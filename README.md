@@ -1,12 +1,11 @@
 # ASCII-Engine
-## Tiny C11 library with only one header for EGA terminal graphics
+## Tiny C99 library with only one header for EGA terminal graphics
 ### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from [EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#:~:text=Default%20EGA%2016%2Dcolor%20palette%2C%20matching%20CGA%20colors).
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/1.PNG)
 
 #### Linking
 Engine is based on SDL2.    
 You just need to copy the `core.h` file to your working directory and then link project with SDL2.   
-Written in Visual C++ 11, but also usable with other standards and compilers.
 
 #### About engine
 ##### Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
@@ -47,7 +46,7 @@ unsigned char init_game() { return 0; }
 
 void input_game(SDL_Scancode key) {}
 
-void update_core(struct Core* core) {
+void update_game(struct Core* core) {
 	set_tile(core, '@', INDEX_BRIGHT_YELLOW, 2, 0);
 }
 

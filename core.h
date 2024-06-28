@@ -1,7 +1,6 @@
 #pragma once
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
-#include "EGA8x8.h"
 
 // size of one tile in px 
 #define TILE_W 8 
@@ -1080,8 +1079,8 @@ void shutdown_game();
 
 unsigned char init_core(struct Core* core) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-		char buffer[128];
-		sprintf_s(buffer, 128, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
+	  char buffer[128];
+		sprintf(buffer, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
@@ -1102,7 +1101,7 @@ unsigned char init_core(struct Core* core) {
 		WIDTH * TILE_W * SCALE, HEIGHT * TILE_H * SCALE, 0);
 	if (core->window == NULL) {
 		char buffer[128];
-		sprintf_s(buffer, 128, "Window couldn't be created!\nError: %s", SDL_GetError());
+		sprintf(buffer, "Window couldn't be created!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
@@ -1110,7 +1109,7 @@ unsigned char init_core(struct Core* core) {
 	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_ACCELERATED);
 	if (core->renderer == NULL) {
 		char buffer[128];
-		sprintf_s(buffer, 128, "Renderer couldn't be created!\nError: %s", SDL_GetError());
+		sprintf(buffer, "Renderer couldn't be created!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
@@ -1123,7 +1122,7 @@ unsigned char init_core(struct Core* core) {
 
 	if (raw_gfx == NULL) {
 		char buffer[128];
-		sprintf_s(buffer, 128, "Assets couldn't be loaded!\nError: %s", SDL_GetError());
+		sprintf(buffer, "Assets couldn't be loaded!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
@@ -1131,7 +1130,7 @@ unsigned char init_core(struct Core* core) {
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
 	if (core->gfx == NULL) {
 		char buffer[128];
-		sprintf_s(buffer, 128, "Assets couldn't initialize!\nError: %s", SDL_GetError());
+		sprintf(buffer, "Assets couldn't initialize!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
@@ -1191,7 +1190,7 @@ void run_core(struct Core* core) {
 
 		unsigned long long end = SDL_GetPerformanceCounter();
 		float elapsed = 1.f / ((end - start) / (float)SDL_GetPerformanceFrequency());
-		char buffer[128]; sprintf_s(buffer, 128, "Current FPS: %0.0f", elapsed);
+		char buffer[128]; sprintf(buffer, "Current FPS: %0.0f", elapsed);
 		SDL_SetWindowTitle(core->window, buffer);
 	}
 }
