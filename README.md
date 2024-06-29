@@ -1,6 +1,6 @@
 # ASCII-Engine
 ## Tiny C99 library with only one header for EGA terminal graphics
-### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from [EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#:~:text=Default%20EGA%2016%2Dcolor%20palette%2C%20matching%20CGA%20colors).
+### Used EGA for graphics, 8x8 EGA font on 80x43 screen. Used 16 colors from [EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/1.PNG)
 
 #### Linking
@@ -32,7 +32,7 @@ The second argument is a character to draw. Use a character enclosed in single q
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 
-In the main files, you need to create and initialize the `Core` using the `init_core()` function, which takes a `struct Core*` as an argument.   
+In the main files, you need to create and initialize the `Core` using the `init_core()` function, which takes a `struct Core*`, `vsync`, `scale` as an arguments.  
 Then, activate and run the `Core` using the `run_core(struct Core*)` function.   
 Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` function.
 
@@ -54,7 +54,7 @@ void shutdown_game() {}
 
 int main(int argc, char* args[]) {
 	struct Core core;
-	if (init_core(&core) != 0) return 1;
+	if (init_core(&core, 0, 2) != 0) return 1;
 	else run_core(&core);
 	shutdown_core(&core);
 	return 0;

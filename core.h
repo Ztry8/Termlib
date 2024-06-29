@@ -1077,7 +1077,7 @@ void input_game(SDL_Scancode);
 void update_game(struct Core*);
 void shutdown_game();
 
-unsigned char init_core(struct Core* core) {
+unsigned char init_core(struct Core* core, char vsync, char scale) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
 	  char buffer[128];
 		sprintf(buffer, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
@@ -1090,15 +1090,11 @@ unsigned char init_core(struct Core* core) {
 	SDL_SetHint(SDL_HINT_APP_NAME, "Engine");
 	SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
 	SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
-	#ifdef VSYNC
-		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
-	#else 
-		SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
-	#endif
+	if (!vsync) SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
 	SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
 
 	core->window = SDL_CreateWindow("Province", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		WIDTH * TILE_W * SCALE, HEIGHT * TILE_H * SCALE, 0);
+		WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale, 0);
 	if (core->window == NULL) {
 		char buffer[128];
 		sprintf(buffer, "Window couldn't be created!\nError: %s", SDL_GetError());
@@ -1106,15 +1102,15 @@ unsigned char init_core(struct Core* core) {
 		return 1;
 	}
 
-	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_ACCELERATED);
+	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 	if (core->renderer == NULL) {
 		char buffer[128];
 		sprintf(buffer, "Renderer couldn't be created!\nError: %s", SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
 		return 1;
 	}
-	SDL_RenderSetLogicalSize(core->renderer, WIDTH * TILE_W * SCALE, HEIGHT * TILE_H * SCALE);
-	SDL_RenderSetScale(core->renderer, SCALE, SCALE);
+	SDL_RenderSetLogicalSize(core->renderer, WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale);
+	SDL_RenderSetScale(core->renderer, scale, scale);
 	
 	SDL_Surface* raw_gfx = SDL_CreateRGBSurfaceFrom((void*)font.pixel_data, font.width, font.height,
 		font.bytes_per_pixel * 8, font.bytes_per_pixel * font.width, 0x000000ff, 0x0000ff00, 0x00ff0000,
@@ -1144,22 +1140,24 @@ unsigned char init_core(struct Core* core) {
 }
 
 static const unsigned char* set_color(unsigned char color) {
-	if (color == 0) return BLACK;
-	else if (color == 1) return BLUE;
-	else if (color == 2) return GREEN;
-	else if (color == 3) return CYAN;
-	else if (color == 4) return RED;
-	else if (color == 5) return MAGENTA;
-	else if (color == 6) return BROWN;
-	else if (color == 7) return LIGHT_GRAY;
-	else if (color == 8) return DARK_GRAY;
-	else if (color == 9) return BRIGHT_BLUE;
-	else if (color == 10) return BRIGHT_GREEN;
-	else if (color == 11) return BRIGHT_CYAN;
-	else if (color == 12) return BRIGHT_RED;
-	else if (color == 13) return BRIGHT_MAGENTA;
-	else if (color == 14) return BRIGHT_YELLOW;
-	else return BRIGHT_WHITE;
+  switch (color) {
+	case 0: return BLACK; break;
+	case 1: return BLUE; break;
+	case 2: return GREEN; break;
+	case 3: return CYAN; break;
+	case 4: return RED; break;
+	case 5: return MAGENTA; break;
+	case 6: return BROWN; break;
+	case 7: return LIGHT_GRAY; break;
+	case 8: return DARK_GRAY; break;
+	case 9: return BRIGHT_BLUE; break;
+	case 10: return BRIGHT_GREEN; break;
+	case 11: return BRIGHT_CYAN; break;
+	case 12: return BRIGHT_RED; break;
+	case 13: return BRIGHT_MAGENTA; break;
+	case 14: return BRIGHT_YELLOW; break;
+	default: return BRIGHT_WHITE; break;
+  }
 }
 
 void set_tile(struct Core* core, char symbol, unsigned char color, long x, long y) {
