@@ -9,7 +9,7 @@ You just need to copy the `core.h` file to your working directory and then link 
 
 #### About engine
 ##### Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
-The engine uses batching for rendering tiles, but tile culling has not been implemented yet. See the TODO list.   
+The engine uses batching for rendering tiles and tile culling has been implemented.
 The window closes when you press the Esc key, but not when you press Alt+F4 (this only works on Windows).
 It has vsync only as a frame rate cap and display fps on window's title, graphics API provided by SDL2. The font used for graphics is built into the header code.
 It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
@@ -44,7 +44,7 @@ unsigned char init_game() { return 0; }
 void input_game(SDL_Scancode key) {}
 
 void update_game(struct Core* core) {
-	draw_tile(core, '@', INDEX_BRIGHT_YELLOW, 2, 0);
+	draw_tile(core, '@', INDEX_BRIGHT_YELLOW, 2, 0, 0, 0);
 }
 
 void shutdown_game() {}
@@ -59,5 +59,5 @@ int main(int argc, char* args[]) {
 ```
 
 ### TODO:
-- [ ] Add tile culling and camera support.
+- [x] Add tile culling and camera support.
 - [ ] Perhaps, add support for sound.

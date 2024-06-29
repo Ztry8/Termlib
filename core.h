@@ -1150,17 +1150,20 @@ static const unsigned char* set_color(unsigned char color) {
   }
 }
 
-void draw_tile(struct Core* core, char symbol, unsigned char color, long x, long y) {
+void draw_tile(struct Core* core, char symbol, unsigned char color, long x, long y, long cx, long cy) {
 	SDL_Rect part;
 	part.x = TILE_W * (symbol - 32); part.y = 0;
 	part.w = TILE_W; part.h = TILE_H;
 
-	SDL_Rect pos;
-	pos.x = x * TILE_W; pos.y = y * TILE_H;
-	pos.w = TILE_W; pos.h = TILE_H;
+  long real_x = x + WIDTH / 2 - cx, real_y = y + HEIGHT / 2 - cy;
+  if (real_x < WIDTH && real_x >= 0 && real_y < HEIGHT && real_y >= 0) {
+    SDL_Rect pos;
+    pos.x = real_x * TILE_W; pos.y = real_y * TILE_H;
+    pos.w = TILE_W; pos.h = TILE_H;
 
-	SDL_SetTextureColorMod(core->gfx, set_color(color)[0], set_color(color)[1], set_color(color)[2]);
-	SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+    SDL_SetTextureColorMod(core->gfx, set_color(color)[0], set_color(color)[1], set_color(color)[2]);
+    SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+  }
 }
 
 void run_core(struct Core* core) {
