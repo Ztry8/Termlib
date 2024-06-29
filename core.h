@@ -1173,7 +1173,6 @@ void run_core(struct Core* core) {
 		  unsigned long long start = SDL_GetPerformanceCounter();
     #endif
 		while (SDL_PollEvent(&e)) { 
-			if (e.type == SDL_QUIT || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE]) quit = 1; 
 			if (e.type == SDL_KEYDOWN) input_game(e.key.keysym.scancode);
 		}
 
