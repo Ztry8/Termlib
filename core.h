@@ -1077,7 +1077,7 @@ void input_game(SDL_Scancode);
 void update_game(struct Core*);
 void shutdown_game();
 
-unsigned char init_core(struct Core* core, char vsync, char scale) {
+unsigned char init_core(struct Core* core, char vsync, char scale, const char* name) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
 	  char buffer[128];
 		sprintf(buffer, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
@@ -1087,13 +1087,13 @@ unsigned char init_core(struct Core* core, char vsync, char scale) {
 
 	SDL_ShowCursor(0);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	SDL_SetHint(SDL_HINT_APP_NAME, "Engine");
+	SDL_SetHint(SDL_HINT_APP_NAME, name);
 	SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
 	SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
 	if (!vsync) SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
 	SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
 
-	core->window = SDL_CreateWindow("Province", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	core->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale, 0);
 	if (core->window == NULL) {
 		char buffer[128];
@@ -1160,7 +1160,7 @@ static const unsigned char* set_color(unsigned char color) {
   }
 }
 
-void set_tile(struct Core* core, char symbol, unsigned char color, long x, long y) {
+void draw_tile(struct Core* core, char symbol, unsigned char color, long x, long y) {
 	SDL_Rect part;
 	part.x = TILE_W * (symbol - 32); part.y = 0;
 	part.w = TILE_W; part.h = TILE_H;
@@ -1176,7 +1176,9 @@ void set_tile(struct Core* core, char symbol, unsigned char color, long x, long 
 void run_core(struct Core* core) {
 	SDL_Event e; char quit = 0;
 	while (!quit) {
-		unsigned long long start = SDL_GetPerformanceCounter();
+    #ifdef SHOW_FPS
+		  unsigned long long start = SDL_GetPerformanceCounter();
+    #endif
 		while (SDL_PollEvent(&e)) { 
 			if (e.type == SDL_QUIT || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE]) quit = 1; 
 			if (e.type == SDL_KEYDOWN) input_game(e.key.keysym.scancode);
@@ -1186,10 +1188,12 @@ void run_core(struct Core* core) {
 		update_game(core);
 		SDL_RenderPresent(core->renderer);
 
-		unsigned long long end = SDL_GetPerformanceCounter();
-		float elapsed = 1.f / ((end - start) / (float)SDL_GetPerformanceFrequency());
-		char buffer[128]; sprintf(buffer, "Current FPS: %0.0f", elapsed);
-		SDL_SetWindowTitle(core->window, buffer);
+    #ifdef SHOW_FPS
+      unsigned long long end = SDL_GetPerformanceCounter();
+      float elapsed = 1.f / ((end - start) / (float)SDL_GetPerformanceFrequency());
+      char buffer[128]; sprintf(buffer, "Current FPS: %0.0f", elapsed);
+      SDL_SetWindowTitle(core->window, buffer);
+    #endif
 	}
 }
 
