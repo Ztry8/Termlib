@@ -15,11 +15,6 @@ It has vsync only as a frame rate cap and display fps on window's title, graphic
 It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
 #### Using
-Define `VSYNC` before including header for v-sync.   
-Define the `SCALE` as a number to set the correct scale for your graphics.   
-`SCALE` = 1: 640x344 resolution,   
-`SCALE` = 2: 1280x688 resolution, etc.
-
 Firstly, include the header file. Then, write the functions:   
 `init_game()` used to start your game. It helps you create levels or do anything else you need.   
 `input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
@@ -38,8 +33,6 @@ Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` 
 
 Example code of main file:
 ```
-//#define VSYNC
-#define SCALE 2
 #include "core.h"
 
 unsigned char init_game() { return 0; }
