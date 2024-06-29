@@ -59,6 +59,5 @@ int main(int argc, char* args[]) {
 ```
 
 ### TODO:
-- [ ] Change the colour system to make it more user-friendly and efficient.
-- [ ] Add tile culling.
+- [ ] Add tile culling and camera support.
 - [ ] Perhaps, add support for sound.

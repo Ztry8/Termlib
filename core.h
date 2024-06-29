@@ -1077,13 +1077,17 @@ void input_game(SDL_Scancode);
 void update_game(struct Core*);
 void shutdown_game();
 
-unsigned char init_core(struct Core* core, char vsync, char scale, const char* name) {
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-	  char buffer[128];
-		sprintf(buffer, "SDL2 couldn't initialize!\nError: %s", SDL_GetError());
+static unsigned char display_error(const char* error_msg) {
+  	char buffer[128];
+		sprintf(buffer, error_msg, SDL_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
-		return 1;
-	}
+    return 1;
+}
+
+unsigned char init_core(struct Core* core, char vsync, char scale, const char* name) {
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) 
+    return display_error("SDL2 couldn't initialize!\nError: %s");
+	
 
 	SDL_ShowCursor(0);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
@@ -1095,20 +1099,13 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 
 	core->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale, 0);
-	if (core->window == NULL) {
-		char buffer[128];
-		sprintf(buffer, "Window couldn't be created!\nError: %s", SDL_GetError());
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
-		return 1;
-	}
+	if (core->window == NULL) 
+    return display_error("Window couldn't be created!\nError: %s");
 
 	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
-	if (core->renderer == NULL) {
-		char buffer[128];
-		sprintf(buffer, "Renderer couldn't be created!\nError: %s", SDL_GetError());
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
-		return 1;
-	}
+	if (core->renderer == NULL) 
+    return display_error("Renderer couldn't be created!\nError: %s");
+
 	SDL_RenderSetLogicalSize(core->renderer, WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale);
 	SDL_RenderSetScale(core->renderer, scale, scale);
 	
@@ -1116,22 +1113,15 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 		font.bytes_per_pixel * 8, font.bytes_per_pixel * font.width, 0x000000ff, 0x0000ff00, 0x00ff0000,
 		(font.bytes_per_pixel == 3) ? 0 : 0xff000000);
 
-	if (raw_gfx == NULL) {
-		char buffer[128];
-		sprintf(buffer, "Assets couldn't be loaded!\nError: %s", SDL_GetError());
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
-		return 1;
-	}
+	if (raw_gfx == NULL) 
+    return display_error("Assets couldn't be loaded!\nError: %s");
 
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
-	if (core->gfx == NULL) {
-		char buffer[128];
-		sprintf(buffer, "Assets couldn't initialize!\nError: %s", SDL_GetError());
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", buffer, NULL);
-		return 1;
-	}
+	if (core->gfx == NULL) 
+    return display_error("Assets couldn't initialize!\nError: %s");
+	
 
-	if (init_game() != 0) {
+	if (init_game()) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Your system doesn't meet the requirements!", NULL);
 		return 1;
 	}
