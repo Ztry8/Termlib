@@ -52,7 +52,7 @@ void shutdown_game() {}
 int main(int argc, char* args[]) {
 	struct Core core;
 	if (init_core(&core, 0, 2, "MyGame") != 0) return 1;
-	else run_core(&core);
+	run_core(&core);
 	shutdown_core(&core);
 	return 0;
 }
