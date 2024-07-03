@@ -3,7 +3,7 @@
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
 ### About engine
-The engine uses 8x8 EGA font on 80x43 screen. Used 16 colors from [EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).   
+The engine uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).   
 It uses batching for rendering tiles and tile culling has been implemented.
 The window doesn't close when you press Alt+F4 (this only works on Windows).
 It has vsync only as a frame rate cap and display fps on window's title, graphics API provided by SDL2. The font used for graphics is built into the header code.
