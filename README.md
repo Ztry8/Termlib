@@ -58,6 +58,6 @@ int main(int argc, char* args[]) {
 }
 ```
 
-### TODO:
+### TODO
 - [x] Add tile culling and camera support.
 - [ ] Perhaps, add support for sound.
