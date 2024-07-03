@@ -1072,10 +1072,10 @@ struct Core {
 	SDL_Texture* gfx;
 };
 
-unsigned char init_game();
+unsigned char init_game(void);
 void input_game(SDL_Scancode);
 void update_game(struct Core*);
-void shutdown_game();
+void shutdown_game(void);
 
 static unsigned char display_error(const char* error_msg) {
   	char buffer[128];
