@@ -1190,6 +1190,7 @@ void run_core(struct Core* core) {
 	}
 }
 
+
 void shutdown_core(struct Core* core) {
 	shutdown_game();
 	SDL_DestroyTexture(core->gfx);

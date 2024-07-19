@@ -9,6 +9,9 @@ The window doesn't close when you press Alt+F4 (this only works on Windows).
 It has vsync only as a frame rate cap and display fps on window's title, graphics API provided by SDL2. The font used for graphics is built into the header code.
 It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
+### Does it support C++ ?
+Yes, the library has been tested with C++ and works pretty well.
+
 ### Linking
 
 #### Windows
@@ -16,15 +19,28 @@ Engine is based on SDL2.
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
 
 #### Linux
-If you are running Linux, you can use the `build.sh` file instead.
-
+Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
 git clone https://github.com/Ztry8/ASCII-Engine.git
 touch src/main.c
 # put some code in the file `src/main.c`, see `Using`
-chmod +x build.sh
-./build.sh
+mkdir build/
+cd build/
 ```
+For `make`:
+```
+cmake ../src
+make
+```
+For `ninja`:
+```
+cmake ../src -G Ninja
+ninja
+```
+After that, you can see your application as ` build/ASCII-Engine`.
+
+#### Linux and C++
+
 
 ### Using
 Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
