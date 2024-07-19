@@ -85,7 +85,7 @@ Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` 
 
 #### Functions
 
-##### Functions you need to implement:
+##### Callbacks:
 `init_game()` used to start your game. It helps you create levels or do anything else you need.   
 `input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
 `update_game(struct Core* core)` used for processing graphics and is called every frame.   
