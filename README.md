@@ -2,15 +2,23 @@
 ## Tiny C99 library with only one header for [EGA](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter) terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
-### About engine
-The engine uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).   
-It uses batching for rendering tiles and tile culling has been implemented.
-The window doesn't close when you press Alt+F4 (this only works on Windows).
-It has vsync only as a frame rate cap and display fps on window's title, graphics API provided by SDL2. The font used for graphics is built into the header code.
-It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
-### Does it support C++ ?
+### About engine
+
+#### Font
+The engine uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).  
+The font used for graphics is built into the header code.
+
+#### Rendering
+The engine uses batching for rendering tiles and tile culling has been implemented, it has vsync only as a frame rate cap. 
+The graphics API provided by SDL2. 
+
+#### Input
+The engine uses the keyboard as input, and does not have mouse support, and there are no plans to add it in the future.
+
+#### Does it support C++ ?
 Yes, the library has been tested with C++ and works pretty well.
+
 
 ### Linking
 
@@ -27,43 +35,22 @@ touch src/main.c
 mkdir build/
 cd build/
 ```
-For `make`:
+For  `make`:
 ```
 cmake ../src
 make
 ```
-For `ninja`:
+For  `ninja`:
 ```
 cmake ../src -G Ninja
 ninja
 ```
-After that, you can see your application as ` build/ASCII-Engine`.
-
-#### Linux and C++
+After that, you can see your application as `build/ASCII-Engine`.
 
 
 ### Using
-Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
-Define `SHOW_FPS` before including header for displaying fps instead of app name.   
-Firstly, include the header file. Then, write the functions:   
-`init_game()` used to start your game. It helps you create levels or do anything else you need.   
-`input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
-`update_game(struct Core* core)` used for processing graphics and is called every frame.   
-`shutdown_game()` used for free up resources in your game.   
 
-Called function:   
-`draw_tile(struct Core*, char, unsigned char, long, long)` used for displaying and drawing tiles.   
-The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
-The third argument is color. You can also look at the names in the header.   
-The fourth and fifth arguments are the x and y coordinates.
-
-In the main files, you need to create and initialize the `Core` using the `init_core()` function, which takes a `struct Core*`, `vsync`, `scale` as an arguments.   
-`scale` = 1: 640x344 resolution,   
-`scale` = 2: 1280x688 resolution, etc. 
-Then, activate and run the `Core` using the `run_core(struct Core*)` function.   
-Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` function.
-
-Example code of main file:
+#### Example
 ```
 //#define SHOW_FPS
 #include "core.h"
@@ -86,6 +73,30 @@ int main(int argc, char* args[]) {
 	return 0;
 }
 ```
+#### Run engine
+Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
+Define `SHOW_FPS` before including header for displaying fps instead of app name.  
+
+In the main files, you need to create and initialize the `Core` using the `init_core()` function, which takes a `struct Core*`, `vsync`, `scale` as an arguments.   
+`scale` = 1: 640x344 resolution,   
+`scale` = 2: 1280x688 resolution, etc. 
+Then, activate and run the `Core` using the `run_core(struct Core*)` function.   
+Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` function.
+
+#### Functions
+
+##### Functions you need to implement:
+`init_game()` used to start your game. It helps you create levels or do anything else you need.   
+`input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
+`update_game(struct Core* core)` used for processing graphics and is called every frame.   
+`shutdown_game()` used for free up resources in your game.   
+
+##### Called function:   
+`draw_tile(struct Core*, char, unsigned char, long, long)` used for displaying and drawing tiles.   
+The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
+The third argument is color. You can also look at the names in the header.   
+The fourth and fifth arguments are the x and y coordinates.
+
 
 ### TODO
 - [x] Add tile culling and camera support.

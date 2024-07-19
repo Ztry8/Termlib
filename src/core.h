@@ -1095,7 +1095,6 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 	SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
 	SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
 	if (!vsync) SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
-	SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
 
 	core->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale, 0);
