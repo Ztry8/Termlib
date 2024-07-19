@@ -10,22 +10,22 @@
 #define WIDTH 80
 #define HEIGHT 43
 
-#define INDEX_BLACK 0
-#define INDEX_BLUE 1
-#define INDEX_GREEN 2
-#define INDEX_CYAN 3
-#define INDEX_RED 4
-#define INDEX_MAGENTA 5
-#define INDEX_BROWN 6
-#define INDEX_LIGHT_GRAY 7
-#define INDEX_DARK_GRAY 8
-#define INDEX_BRIGHT_BLUE 9
-#define INDEX_BRIGHT_GREEN 10
-#define INDEX_BRIGHT_CYAN 11
-#define INDEX_BRIGHT_RED 12
-#define INDEX_BRIGHT_MAGENTA 13
-#define INDEX_BRIGHT_YELLOW 14
-#define INDEX_BRIGHT_WHITE 15
+// #define INDEX_BLACK 0
+// #define INDEX_BLUE 1
+// #define INDEX_GREEN 2
+// #define INDEX_CYAN 3
+// #define INDEX_RED 4
+// #define INDEX_MAGENTA 5
+// #define INDEX_BROWN 6
+// #define INDEX_LIGHT_GRAY 7
+// #define INDEX_DARK_GRAY 8
+// #define INDEX_BRIGHT_BLUE 9
+// #define INDEX_BRIGHT_GREEN 10
+// #define INDEX_BRIGHT_CYAN 11
+// #define INDEX_BRIGHT_RED 12
+// #define INDEX_BRIGHT_MAGENTA 13
+// #define INDEX_BRIGHT_YELLOW 14
+// #define INDEX_BRIGHT_WHITE 15
 
 const unsigned char BLACK[3] = { 0, 0, 0 };		
 const unsigned char BLUE[3] = { 0, 0, 170 };	
