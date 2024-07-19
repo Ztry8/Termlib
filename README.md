@@ -10,8 +10,21 @@ It has vsync only as a frame rate cap and display fps on window's title, graphic
 It doesn't have a feature for mouse support, and it isn't planned to be added in the future.
 
 ### Linking
+
+#### Windows
 Engine is based on SDL2.    
-You just need to copy the `core.h` file to your working directory and then link project with SDL2.   
+You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
+
+#### Linux
+If you are running Linux, you can use the `build.sh` file instead.
+
+```
+git clone https://github.com/Ztry8/ASCII-Engine.git
+touch src/main.c
+# put some code in the file `src/main.c`, see `Using`
+chmod +x build.sh
+./build.sh
+```
 
 ### Using
 Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
@@ -51,7 +64,7 @@ void shutdown_game() {}
 
 int main(int argc, char* args[]) {
 	struct Core core;
-	if (init_core(&core, 0, 2, "MyGame") != 0) return 1;
+	if (init_core(&core, 0, 2, "MyGame")) return 1;
 	run_core(&core);
 	shutdown_core(&core);
 	return 0;
