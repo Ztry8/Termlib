@@ -82,6 +82,8 @@ int main(int argc, char* args[]) {
 	return 0;
 }
 ```
+Result:
+![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/example.png)
 #### Run engine
 Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
 Define `SHOW_FPS` before including header for displaying fps instead of app name.  
