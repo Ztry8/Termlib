@@ -1,4 +1,4 @@
-# ASCII-Engine
+# Termlib
 ## Lightweight and simple C99 library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
