@@ -1,54 +1,10 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <stdio.h>
-
-// size of one tile in px 
-#define TILE_W 8 
-#define TILE_H 8
-
-// size of window's screen in tiles 
-#define WIDTH 80
-#define HEIGHT 43
-
-#define INDEX_BLACK 0
-#define INDEX_BLUE 1
-#define INDEX_GREEN 2
-#define INDEX_CYAN 3
-#define INDEX_RED 4
-#define INDEX_MAGENTA 5
-#define INDEX_BROWN 6
-#define INDEX_LIGHT_GRAY 7
-#define INDEX_DARK_GRAY 8
-#define INDEX_BRIGHT_BLUE 9
-#define INDEX_BRIGHT_GREEN 10
-#define INDEX_BRIGHT_CYAN 11
-#define INDEX_BRIGHT_RED 12
-#define INDEX_BRIGHT_MAGENTA 13
-#define INDEX_BRIGHT_YELLOW 14
-#define INDEX_BRIGHT_WHITE 15
-
-const unsigned char BLACK[3] = { 0, 0, 0 };		
-const unsigned char BLUE[3] = { 0, 0, 170 };	
-const unsigned char GREEN[3] = { 0, 170, 0 };	
-const unsigned char CYAN[3] = { 0, 170, 170 };	
-const unsigned char RED[3] = { 170, 0, 0 };	
-const unsigned char MAGENTA[3] = { 170, 0, 170 };
-const unsigned char BROWN[3] = { 170, 85, 0 };
-const unsigned char LIGHT_GRAY[3] = { 170, 170, 170 };	
-const unsigned char DARK_GRAY[3] = { 85, 85, 85 };	
-const unsigned char BRIGHT_BLUE[3] = { 85, 85, 255 };	
-const unsigned char BRIGHT_GREEN[3] = { 85, 255, 85 };	
-const unsigned char BRIGHT_CYAN[3] = { 85, 255, 255 };	
-const unsigned char BRIGHT_RED[3] = { 255, 85, 85 };
-const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
-const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
-const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
 
 static const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel; /* 2:RGB16, 3:RGB, 4:RGBA */ 
-  unsigned char	 pixel_data[768 * 8 * 4 + 1];
+  unsigned int width;
+  unsigned int height;
+  unsigned int bytes_per_pixel;
+  unsigned char	pixel_data[768 * 8 * 4 + 1];
 } font = {
   768, 8, 4,
   "\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000"
@@ -1065,6 +1021,34 @@ static const struct {
   "\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377\000\000\000\377",
 };
 
+#include <SDL2/SDL.h>
+#include <stdio.h>
+
+// size of one tile in px 
+const unsigned int TILE_W = 8;
+const unsigned int TILE_H = 8;
+
+// size of window's screen in tiles 
+const unsigned int WIDTH = 80;
+const unsigned int HEIGHT = 43;
+
+const unsigned char BLACK[3] = { 0, 0, 0 };		
+const unsigned char BLUE[3] = { 0, 0, 170 };	
+const unsigned char GREEN[3] = { 0, 170, 0 };	
+const unsigned char CYAN[3] = { 0, 170, 170 };	
+const unsigned char RED[3] = { 170, 0, 0 };	
+const unsigned char MAGENTA[3] = { 170, 0, 170 };
+const unsigned char BROWN[3] = { 170, 85, 0 };
+const unsigned char LIGHT_GRAY[3] = { 170, 170, 170 };	
+const unsigned char DARK_GRAY[3] = { 85, 85, 85 };	
+const unsigned char BRIGHT_BLUE[3] = { 85, 85, 255 };	
+const unsigned char BRIGHT_GREEN[3] = { 85, 255, 85 };	
+const unsigned char BRIGHT_CYAN[3] = { 85, 255, 255 };	
+const unsigned char BRIGHT_RED[3] = { 255, 85, 85 };
+const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
+const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
+const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
+
 
 struct Core {
 	SDL_Window* window;
@@ -1088,7 +1072,6 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
 	
-
 	SDL_ShowCursor(0);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	SDL_SetHint(SDL_HINT_APP_NAME, name);
@@ -1128,40 +1111,38 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 	return 0;
 }
 
-static const unsigned char* set_color(unsigned char color) {
-  switch (color) {
-	case 0: return BLACK; break;
-	case 1: return BLUE; break;
-	case 2: return GREEN; break;
-	case 3: return CYAN; break;
-	case 4: return RED; break;
-	case 5: return MAGENTA; break;
-	case 6: return BROWN; break;
-	case 7: return LIGHT_GRAY; break;
-	case 8: return DARK_GRAY; break;
-	case 9: return BRIGHT_BLUE; break;
-	case 10: return BRIGHT_GREEN; break;
-	case 11: return BRIGHT_CYAN; break;
-	case 12: return BRIGHT_RED; break;
-	case 13: return BRIGHT_MAGENTA; break;
-	case 14: return BRIGHT_YELLOW; break;
-	default: return BRIGHT_WHITE; break;
-  }
-}
-
-void draw_tile(struct Core* core, char symbol, unsigned char color, long x, long y, long cx, long cy) {
-	SDL_Rect part;
-	part.x = TILE_W * (symbol - 32); part.y = 0;
-	part.w = TILE_W; part.h = TILE_H;
-
+void draw_tile_camera(struct Core* core, char symbol, const unsigned char* color, long x, long y, long cx, long cy) {
   long real_x = x + WIDTH / 2 - cx, real_y = y + HEIGHT / 2 - cy;
   if (real_x < WIDTH && real_x >= 0 && real_y < HEIGHT && real_y >= 0) {
+    SDL_Rect part;
+    part.x = TILE_W * (symbol - 32); part.y = 0;
+    part.w = TILE_W; part.h = TILE_H;
+
     SDL_Rect pos;
     pos.x = real_x * TILE_W; pos.y = real_y * TILE_H;
     pos.w = TILE_W; pos.h = TILE_H;
 
-    SDL_SetTextureColorMod(core->gfx, set_color(color)[0], set_color(color)[1], set_color(color)[2]);
+    SDL_SetTextureColorMod(core->gfx, color[0], color[1], color[2]);
     SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+  }
+}
+
+void draw_tile(struct Core* core, char symbol, const unsigned char* color, long x, long y) {
+  SDL_Rect part;
+  part.x = TILE_W * (symbol - 32); part.y = 0;
+  part.w = TILE_W; part.h = TILE_H;
+
+  SDL_Rect pos;
+  pos.x = x * TILE_W; pos.y = y * TILE_H;
+  pos.w = TILE_W; pos.h = TILE_H;
+
+  SDL_SetTextureColorMod(core->gfx, color[0], color[1], color[2]);
+  SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+}
+
+void print(struct Core* core, const char* text, const unsigned char* color, long x, long y) {
+  for (int i = 0; i < strlen(text); i++) {
+    draw_tile(core, text[i], color, x + i, y);
   }
 }
 

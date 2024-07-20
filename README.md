@@ -60,7 +60,16 @@ unsigned char init_game() { return 0; }
 void input_game(SDL_Scancode key) {}
 
 void update_game(struct Core* core) {
-	draw_tile(core, '@', INDEX_BRIGHT_YELLOW, 2, 0, 0, 0);
+	for (unsigned char i = 0; i < 255; i++) {
+		draw_tile(core, i, BRIGHT_YELLOW, 15 + i%16, i/16);
+	}
+
+	print(core, "Hello World!", BLUE, 0, 0);
+	print(core, "Hello World!", GREEN, 0, 1);
+	print(core, "Hello World!", CYAN, 0, 2);
+	print(core, "Hello World!", RED, 0, 3);
+	print(core, "Hello World!", MAGENTA, 0, 4);
+	print(core, "Hello World!", BROWN, 0, 5);
 }
 
 void shutdown_game() {}
