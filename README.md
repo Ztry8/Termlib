@@ -3,18 +3,21 @@
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
 
-### About engine
+### About library
+
+#### Library Goals
+The main goal of the library is to provide fast, easy, and efficient rendering.   
 
 #### Font
-The engine uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).  
+The library uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).  
 The font used for graphics is built into the header code.
 
 #### Rendering
-The engine uses batching for rendering tiles and tile culling has been implemented, it has vsync only as a frame rate cap. 
+The library uses batching for rendering tiles and tile culling has been implemented, it has vsync only as a frame rate cap. 
 The graphics API provided by SDL2. 
 
 #### Input
-The engine uses the keyboard as input, and does not have mouse support, and there are no plans to add it in the future.
+The library uses the keyboard as input, and does not have mouse support, and there are no plans to add it in the future.
 
 #### Does it work with C++?
 Yes, the library has been tested with C++ and works pretty well.
