@@ -1,5 +1,5 @@
 # ASCII-Engine
-## Tiny C99 library with only one header for [EGA](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter) terminal graphics
+## Lightweight and simple C99 library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
 
@@ -21,6 +21,28 @@ Yes, the library has been tested with C++ and works pretty well.
 
 
 ### Linking
+
+#### Linux
+Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
+```
+git clone https://github.com/Ztry8/ASCII-Engine.git
+touch src/main.c
+# put some code in the file `src/main.c`, see `Using`
+mkdir build/
+cd build/
+```
+For  `make`:
+```
+cmake ../src
+make
+```
+For  `ninja`:
+```
+cmake ../src -G Ninja
+ninja
+```
+After that, you can see your application as `build/ASCII-Engine`.
+
 
 #### Windows
 Engine is based on SDL2.    
