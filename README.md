@@ -16,7 +16,7 @@ The graphics API provided by SDL2.
 #### Input
 The engine uses the keyboard as input, and does not have mouse support, and there are no plans to add it in the future.
 
-#### Does it support C++ ?
+#### Does it work with C++?
 Yes, the library has been tested with C++ and works pretty well.
 
 
@@ -47,27 +47,6 @@ After that, you can see your application as `build/ASCII-Engine`.
 #### Windows
 Engine is based on SDL2.    
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
-
-#### Linux
-Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
-```
-git clone https://github.com/Ztry8/ASCII-Engine.git
-touch src/main.c
-# put some code in the file `src/main.c`, see `Using`
-mkdir build/
-cd build/
-```
-For  `make`:
-```
-cmake ../src
-make
-```
-For  `ninja`:
-```
-cmake ../src -G Ninja
-ninja
-```
-After that, you can see your application as `build/ASCII-Engine`.
 
 
 ### Using
