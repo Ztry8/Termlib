@@ -101,12 +101,23 @@ Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` 
 `shutdown_game()` used for free up resources in your game.   
 
 ##### Called function:   
-`draw_tile(struct Core*, char, unsigned char, long, long)` used for displaying and drawing tiles.   
+`draw_tile(struct Core*, char, unsigned char*, long, long)` used for displaying and drawing tiles.   
+The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
+The third argument is color. You can also look at the names in the header.   
+The fourth and fifth arguments are the x and y coordinates.   
+
+`draw_tile_camera(struct Core*, char, unsigned char*, long, long, long, long)` used for displaying and drawing tiles relative to the center of the screen.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
+The sixth and seventh arguments are the x and y coordinates of the camera.
 
+`print(struct Core*, const char*, unsigned char*, long, long)` used for displaying text.   
+The second argument is a text to display.    
+The third argument is color. You can also look at the names in the header.   
+The fourth and fifth arguments are the x and y coordinates.
 
 ### TODO
-- [x] Add tile culling and camera support.
+- [x] Added tile culling and camera support.
+- [x] Added print function
 - [ ] Perhaps, add support for sound.
