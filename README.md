@@ -52,7 +52,7 @@ Engine is based on SDL2.
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
 
 
-### Using
+### Usage
 
 #### Example
 ```
