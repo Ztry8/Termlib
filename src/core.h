@@ -1025,12 +1025,12 @@ static const struct {
 #include <stdio.h>
 
 // size of one tile in px 
-const unsigned int TILE_W = 8;
-const unsigned int TILE_H = 8;
+#define TILE_W 8
+#define TILE_H 8
 
 // size of window's screen in tiles 
-const unsigned int WIDTH = 80;
-const unsigned int HEIGHT = 43;
+#define WIDTH 80
+#define HEIGHT 43
 
 const unsigned char BLACK[3] = { 0, 0, 0 };		
 const unsigned char BLUE[3] = { 0, 0, 170 };	
@@ -1049,16 +1049,15 @@ const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
 const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
 const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
 
-
-struct Core {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	SDL_Texture* gfx;
-};
+typedef struct Core {
+	SDL_Window* window;     
+	SDL_Renderer* renderer; 
+	SDL_Texture* gfx;       
+} renderer;
 
 unsigned char init_game(void);
 void input_game(SDL_Scancode);
-void update_game(struct Core*);
+void update_game(renderer*);
 void shutdown_game(void);
 
 static unsigned char display_error(const char* error_msg) {
@@ -1068,7 +1067,7 @@ static unsigned char display_error(const char* error_msg) {
     return 1;
 }
 
-unsigned char init_core(struct Core* core, char vsync, char scale, const char* name) {
+unsigned char init_renderer(renderer* core, char vsync, char scale, const char* name) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
 	
@@ -1096,22 +1095,22 @@ unsigned char init_core(struct Core* core, char vsync, char scale, const char* n
 		(font.bytes_per_pixel == 3) ? 0 : 0xff000000);
 
 	if (raw_gfx == NULL) 
-    return display_error("Assets couldn't be loaded!\nError: %s");
+    return display_error("Font couldn't be loaded!\nError: %s");
 
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
 	if (core->gfx == NULL) 
-    return display_error("Assets couldn't initialize!\nError: %s");
+    return display_error("Font couldn't initialize!\nError: %s");
 	
 
 	if (init_game()) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Your system doesn't meet the requirements!", NULL);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "An error occurred when initialising the game!", NULL);
 		return 1;
 	}
 
 	return 0;
 }
 
-void draw_tile_camera(struct Core* core, char symbol, const unsigned char* color, long x, long y, long cx, long cy) {
+void draw_tile_camera(renderer* core, char symbol, const unsigned char* color, long x, long y, long cx, long cy) {
   long real_x = x + WIDTH / 2 - cx, real_y = y + HEIGHT / 2 - cy;
   if (real_x < WIDTH && real_x >= 0 && real_y < HEIGHT && real_y >= 0) {
     SDL_Rect part;
@@ -1127,7 +1126,7 @@ void draw_tile_camera(struct Core* core, char symbol, const unsigned char* color
   }
 }
 
-void draw_tile(struct Core* core, char symbol, const unsigned char* color, long x, long y) {
+void draw_tile(renderer* core, char symbol, const unsigned char* color, long x, long y) {
   SDL_Rect part;
   part.x = TILE_W * (symbol - 32); part.y = 0;
   part.w = TILE_W; part.h = TILE_H;
@@ -1140,13 +1139,13 @@ void draw_tile(struct Core* core, char symbol, const unsigned char* color, long 
   SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
 }
 
-void print(struct Core* core, const char* text, const unsigned char* color, long x, long y) {
+void print(renderer* core, const char* text, const unsigned char* color, long x, long y) {
   for (int i = 0; i < strlen(text); i++) {
     draw_tile(core, text[i], color, x + i, y);
   }
 }
 
-void run_core(struct Core* core) {
+void run_render(renderer* core) {
 	SDL_Event e; char quit = 0;
 	while (!quit) {
     #ifdef SHOW_FPS
@@ -1171,7 +1170,7 @@ void run_core(struct Core* core) {
 }
 
 
-void shutdown_core(struct Core* core) {
+void shutdown_renderer(renderer* core) {
 	shutdown_game();
 	SDL_DestroyTexture(core->gfx);
 	SDL_DestroyRenderer(core->renderer);

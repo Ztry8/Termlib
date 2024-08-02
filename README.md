@@ -25,6 +25,10 @@ Yes, the library has been tested with C++ and works pretty well.
 
 ### Linking
 
+#### Windows
+Engine is based on SDL2.    
+You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
+
 #### Linux
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
@@ -39,17 +43,12 @@ For  `make`:
 cmake ../src
 make
 ```
-For  `ninja`:
+For  `ninja` (Recommended):
 ```
 cmake ../src -G Ninja
 ninja
 ```
-After that, you can see your application as `build/ASCII-Engine`.
-
-
-#### Windows
-Engine is based on SDL2.    
-You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
+After that, you can see your application as `build/Termlib-App`.
 
 
 ### Usage
@@ -63,67 +62,66 @@ unsigned char init_game() { return 0; }
 
 void input_game(SDL_Scancode key) {}
 
-void update_game(struct Core* core) {
+void update_game(renderer* renderer) {
 	for (unsigned char i = 0; i < 255; i++) {
-		draw_tile(core, i, BRIGHT_YELLOW, 15 + i%16, i/16);
+		draw_tile(renderer, i, BRIGHT_YELLOW, 15 + i%16, i/16);
 	}
 
-	print(core, "Hello World!", BLUE, 0, 0);
-	print(core, "Hello World!", GREEN, 0, 1);
-	print(core, "Hello World!", CYAN, 0, 2);
-	print(core, "Hello World!", RED, 0, 3);
-	print(core, "Hello World!", MAGENTA, 0, 4);
-	print(core, "Hello World!", BROWN, 0, 5);
+	print(renderer, "Hello World!", BLUE, 0, 0);
+	print(renderer, "Hello World!", GREEN, 0, 1);
+	print(renderer, "Hello World!", CYAN, 0, 2);
+	print(renderer, "Hello World!", RED, 0, 3);
+	print(renderer, "Hello World!", MAGENTA, 0, 4);
+	print(renderer, "Hello World!", BROWN, 0, 5);
 }
 
 void shutdown_game() {}
 
 int main(int argc, char* args[]) {
-	struct Core core;
-	if (init_core(&core, 0, 2, "MyGame")) return 1;
-	run_core(&core);
-	shutdown_core(&core);
+	renderer core;
+	if (init_renderer(&core, 0, 2, "MyGame")) return 1;
+	run_render(&core);
+	shutdown_renderer(&core);
 	return 0;
 }
 ```
 Result:
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/example.png)
 #### Run engine
-Please don't change the `#define` directives in `core.h`. This could disrupt the engine's logic!
 Define `SHOW_FPS` before including header for displaying fps instead of app name.  
 
-In the main files, you need to create and initialize the `Core` using the `init_core()` function, which takes a `struct Core*`, `vsync`, `scale` as an arguments.   
+In the main files, you need to create and initialize the `Core` using the `init_renderer()` function, which takes a `renderer*`, `vsync`, `scale` as an arguments.   
 `scale` = 1: 640x344 resolution,   
 `scale` = 2: 1280x688 resolution, etc. 
-Then, activate and run the `Core` using the `run_core(struct Core*)` function.   
-Finally, release and free the `Core` by using the `shutdown_core(struct Core*)` function.
+Then, activate and run the `renderer` using the `run_render(renderer*)` function.   
+Finally, release and free the `renderer` by using the `shutdown_renderer(renderer*)` function.
 
 #### Functions
 
 ##### Callbacks:
 `init_game()` used to start your game. It helps you create levels or do anything else you need.   
 `input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
-`update_game(struct Core* core)` used for processing graphics and is called every frame.   
+`update_game(renderer*)` used for processing graphics and is called every frame.   
 `shutdown_game()` used for free up resources in your game.   
 
 ##### Called function:   
-`draw_tile(struct Core*, char, unsigned char*, long, long)` used for displaying and drawing tiles.   
+`draw_tile(renderer*, char, unsigned char*, long, long)` used for displaying and drawing tiles.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.   
 
-`draw_tile_camera(struct Core*, char, unsigned char*, long, long, long, long)` used for displaying and drawing tiles relative to the center of the screen.   
+`draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)` used for displaying and drawing tiles relative to the center of the screen.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 The sixth and seventh arguments are the x and y coordinates of the camera.
 
-`print(struct Core*, const char*, unsigned char*, long, long)` used for displaying text.   
+`print(renderer*, const char*, unsigned char*, long, long)` used for displaying text.   
 The second argument is a text to display.    
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 
 ### TODO
 - [x] Added tile culling and camera support.
-- [x] Added print function
-- [ ] Perhaps, add support for sound.
+- [x] Added print function.
+~~Add support for sound.~~
