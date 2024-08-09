@@ -1100,10 +1100,9 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
 	if (core->gfx == NULL) 
     return display_error("Font couldn't initialize!\nError: %s");
-	
 
 	if (init_game()) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "An error occurred when initialising the game!", NULL);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "An error occurred when initialization the game!", NULL);
 		return 1;
 	}
 
@@ -1127,16 +1126,18 @@ void draw_tile_camera(renderer* core, char symbol, const unsigned char* color, l
 }
 
 void draw_tile(renderer* core, char symbol, const unsigned char* color, long x, long y) {
-  SDL_Rect part;
-  part.x = TILE_W * (symbol - 32); part.y = 0;
-  part.w = TILE_W; part.h = TILE_H;
+  if (x < WIDTH && x >= 0 && y < HEIGHT && y >= 0) {
+    SDL_Rect part;
+    part.x = TILE_W * (symbol - 32); part.y = 0;
+    part.w = TILE_W; part.h = TILE_H;
 
-  SDL_Rect pos;
-  pos.x = x * TILE_W; pos.y = y * TILE_H;
-  pos.w = TILE_W; pos.h = TILE_H;
+    SDL_Rect pos;
+    pos.x = x * TILE_W; pos.y = y * TILE_H;
+    pos.w = TILE_W; pos.h = TILE_H;
 
-  SDL_SetTextureColorMod(core->gfx, color[0], color[1], color[2]);
-  SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+    SDL_SetTextureColorMod(core->gfx, color[0], color[1], color[2]);
+    SDL_RenderCopy(core->renderer, core->gfx, &part, &pos);
+  }
 }
 
 void print(renderer* core, const char* text, const unsigned char* color, long x, long y) {
