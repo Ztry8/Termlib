@@ -1030,7 +1030,7 @@ static const struct {
 
 // size of window's screen in tiles 
 #define WIDTH 80
-#define HEIGHT 43
+#define HEIGHT 45
 
 const unsigned char BLACK[3] = { 0, 0, 0 };		
 const unsigned char BLUE[3] = { 0, 0, 170 };	
@@ -1087,7 +1087,6 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 	if (core->renderer == NULL) 
     return display_error("Renderer couldn't be created!\nError: %s");
 
-	SDL_RenderSetLogicalSize(core->renderer, WIDTH * TILE_W * scale, HEIGHT * TILE_H * scale);
 	SDL_RenderSetScale(core->renderer, scale, scale);
 	
 	SDL_Surface* raw_gfx = SDL_CreateRGBSurfaceFrom((void*)font.pixel_data, font.width, font.height,
@@ -1099,7 +1098,7 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
 	if (core->gfx == NULL) 
-    return display_error("Font couldn't initialize!\nError: %s");
+    return display_error("Font couldn't initialized!\nError: %s");
 
 	if (init_game()) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "An error occurred when initialization the game!", NULL);

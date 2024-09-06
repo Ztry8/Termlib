@@ -2,7 +2,6 @@
 ## Lightweight and simple C99 library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
-
 ### About library
 
 #### Library Goals
@@ -33,8 +32,6 @@ You just need to copy the `src/core.h` file to your working directory and then l
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
 git clone https://github.com/Ztry8/ASCII-Engine.git
-touch src/main.c
-# put some code in the file `src/main.c`, see `Using`
 mkdir build/
 cd build/
 ```
