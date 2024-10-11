@@ -1,7 +1,5 @@
-//#define SHOW_FPS
+#define SHOW_FPS
 #include "core.h"
-
-unsigned char init_game() { return 0; }
 
 void input_game(SDL_Scancode key) {}
 

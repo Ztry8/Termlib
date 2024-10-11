@@ -8,7 +8,7 @@
 The main goal of the library is to provide fast, easy, and efficient rendering.   
 
 #### Font
-The library uses 8x8 EGA font on 80x43 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).  
+The library uses 8x8 EGA font on 80x45 screen. Used 16 colors from [default EGA palette](https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter#Color_palette).  
 The font used for graphics is built into the header code.
 
 #### Rendering
@@ -16,7 +16,7 @@ The library uses batching for rendering tiles and tile culling has been implemen
 The graphics API provided by SDL2. 
 
 #### Input
-The library uses the keyboard as input, and does not have mouse support, and there are no plans to add it in the future.
+The library uses the keyboard as input, and there are plans to add a mouse support in the future.
 
 #### Does it work with C++?
 Yes, the library has been tested with C++ and works pretty well.
@@ -31,22 +31,21 @@ You just need to copy the `src/core.h` file to your working directory and then l
 #### Linux
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
-git clone https://github.com/Ztry8/ASCII-Engine.git
+git clone https://github.com/Ztry8/Termlib.git
 mkdir build/
 cd build/
-```
-For  `make`:
-```
-cmake ../src
-make
 ```
 For  `ninja` (Recommended):
 ```
 cmake ../src -G Ninja
 ninja
 ```
+For  `make`:
+```
+cmake ../src
+make
+```
 After that, you can see your application as `build/Termlib-App`.
-
 
 ### Usage
 
@@ -54,8 +53,6 @@ After that, you can see your application as `build/Termlib-App`.
 ```
 //#define SHOW_FPS
 #include "core.h"
-
-unsigned char init_game() { return 0; }
 
 void input_game(SDL_Scancode key) {}
 
@@ -96,7 +93,6 @@ Finally, release and free the `renderer` by using the `shutdown_renderer(rendere
 #### Functions
 
 ##### Callbacks:
-`init_game()` used to start your game. It helps you create levels or do anything else you need.   
 `input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
 `update_game(renderer*)` used for processing graphics and is called every frame.   
 `shutdown_game()` used for free up resources in your game.   
@@ -122,3 +118,4 @@ The fourth and fifth arguments are the x and y coordinates.
 - [x] Added tile culling and camera support.
 - [x] Added print function.   
 ~~Add support for sound.~~
+- [ ] Add mouse support

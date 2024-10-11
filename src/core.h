@@ -1055,7 +1055,6 @@ typedef struct Core {
 	SDL_Texture* gfx;       
 } renderer;
 
-unsigned char init_game(void);
 void input_game(SDL_Scancode);
 void update_game(renderer*);
 void shutdown_game(void);
@@ -1071,7 +1070,7 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
 	
-	SDL_ShowCursor(0);
+	SDL_ShowCursor(1);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	SDL_SetHint(SDL_HINT_APP_NAME, name);
 	SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
@@ -1099,11 +1098,6 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 	core->gfx = SDL_CreateTextureFromSurface(core->renderer, raw_gfx); SDL_FreeSurface(raw_gfx);
 	if (core->gfx == NULL) 
     return display_error("Font couldn't initialized!\nError: %s");
-
-	if (init_game()) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "An error occurred when initialization the game!", NULL);
-		return 1;
-	}
 
 	return 0;
 }
