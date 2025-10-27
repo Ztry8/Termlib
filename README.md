@@ -30,10 +30,11 @@ Yes, the library has been tested with C++ and works pretty well.
 Engine is based on SDL2.    
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
 
-#### Linux
+#### Linux/MacOs
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
 git clone https://github.com/Ztry8/Termlib.git
+cd Termlib
 mkdir build/
 cd build/
 ```
