@@ -1,7 +1,7 @@
 # Termlib
 [![GitHub last commit](https://img.shields.io/github/last-commit/ztry8/termlib)](https://github.com/ztry8/termlib/commits)
 [![License](https://img.shields.io/github/license/ztry8/termlib)](https://github.com/ztry8/termlib/blob/main/LICENSE)
-## Lightweight and simple C99 library with a single header for terminal graphics
+## Lightweight and simple C library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/3.png)
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/1.PNG)
 
@@ -21,6 +21,12 @@ The graphics API provided by SDL2.
 #### Input
 The library uses the keyboard as input, and there are plans to add a mouse support in the future.
 
+#### What platforms does the library work on?
+I tested it on Windows 10, Debian 12, and macOS 10.13,   
+and all functions worked correctly across these platforms.   
+The compilation instructions are tailored to these systems,   
+but the library should be compatible with all platforms supported by SDL2.
+
 #### Does it work with C++?
 Yes, the library has been tested with C++ and works pretty well.
 
@@ -30,6 +36,7 @@ Yes, the library has been tested with C++ and works pretty well.
 #### Windows
 Engine is based on SDL2.    
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
+[Perhaps this will help you](https://wiki.libsdl.org/SDL2/Installation#windows_xpvista7810)
 
 #### Linux/MacOs
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
