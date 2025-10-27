@@ -1049,13 +1049,21 @@ const unsigned char BRIGHT_MAGENTA[3] = { 255, 85, 255 };
 const unsigned char BRIGHT_YELLOW[3] = { 255, 255, 85 };
 const unsigned char BRIGHT_WHITE[3] = { 255, 255, 255 };
 
+typedef struct {
+    unsigned char *buffer;
+    unsigned length;
+    unsigned char *pos;
+    char playing;
+} wav_sound;
+
 typedef struct Core {
 	SDL_Window* window;     
 	SDL_Renderer* renderer; 
-	SDL_Texture* gfx;       
+	SDL_Texture* gfx;     
+  SDL_AudioSpec* spec;
 } renderer;
 
-void input_game(SDL_Scancode);
+void input_game(SDL_Scancode, renderer*);
 void update_game(renderer*);
 void shutdown_game(void);
 
@@ -1066,8 +1074,63 @@ static unsigned char display_error(const char* error_msg) {
     return 1;
 }
 
+void audio_callback(void *userdata, Uint8 *stream, int len) {
+    wav_sound *sound = (wav_sound *)userdata;
+
+    if (!sound->playing) {
+        SDL_memset(stream, 0, len);
+        return;
+    }
+
+    unsigned remaining = sound->length - (sound->pos - sound->buffer);
+    unsigned to_copy = (len > remaining) ? remaining : len;
+
+    SDL_memcpy(stream, sound->pos, to_copy);
+    sound->pos += to_copy;
+
+    if (sound->pos - sound->buffer >= sound->length) {
+      sound->pos = sound->buffer; 
+      sound->playing = 0;
+    }
+
+    if (to_copy < len) {
+        SDL_memset(stream + to_copy, 0, len - to_copy);
+    }
+}
+
+wav_sound *load_wav(const char *filename, renderer* core) {
+    wav_sound *sound = malloc(sizeof(wav_sound));
+
+    if (!sound || SDL_LoadWAV(filename, core->spec, &sound->buffer, &sound->length) == NULL) {
+        display_error("Sound couldn't be loaded!\nError: %s");
+        free(sound);
+    }
+
+    sound->playing = 0;
+    sound->pos = sound->buffer;
+    core->spec->callback = audio_callback;
+    core->spec->userdata = sound;
+
+    return sound;
+}
+
+void play_wav(wav_sound *sound, renderer* core) {
+    if (SDL_OpenAudio(core->spec, NULL) < 0) {
+        display_error("Sound couldn't be played!\nError: %s");
+        return;
+    }
+    
+    SDL_PauseAudio(0); 
+    while (sound->playing) {
+        SDL_Delay(1);
+    }
+
+    sound->playing = 1;
+    SDL_CloseAudio();
+}
+
 unsigned char init_renderer(renderer* core, char vsync, char scale, const char* name) {
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) 
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
 	
 	SDL_ShowCursor(1);
@@ -1147,7 +1210,7 @@ void run_render(renderer* core) {
     #endif
 		while (SDL_PollEvent(&e)) { 
 			if (e.type == SDL_QUIT) quit = 1; 
-			if (e.type == SDL_KEYDOWN) input_game(e.key.keysym.scancode);
+			if (e.type == SDL_KEYDOWN) input_game(e.key.keysym.scancode, core);
 		}
 
 		SDL_RenderClear(core->renderer);

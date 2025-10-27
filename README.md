@@ -2,7 +2,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/ztry8/termlib)](https://github.com/ztry8/termlib/commits)
 [![License](https://img.shields.io/github/license/ztry8/termlib)](https://github.com/ztry8/termlib/blob/main/LICENSE)
 ## Lightweight and simple C99 library with a single header for terminal graphics
-![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
+![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/3.png)
 
 ### About library
 
@@ -30,11 +30,10 @@ Yes, the library has been tested with C++ and works pretty well.
 Engine is based on SDL2.    
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
 
-#### Linux/MacOs
+#### Linux
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
 git clone https://github.com/Ztry8/Termlib.git
-cd Termlib
 mkdir build/
 cd build/
 ```
@@ -53,11 +52,15 @@ After that, you can see your application as `build/Termlib-App`.
 ### Usage
 
 #### Example
-```
-//#define SHOW_FPS
+```c
+// #define SHOW_FPS
 #include "core.h"
 
-void input_game(SDL_Scancode key) {}
+wav_sound *drink;
+
+void input_game(SDL_Scancode key, renderer* renderer) {
+	if (key == SDL_SCANCODE_E) play_wav(drink, renderer);
+}
 
 void update_game(renderer* renderer) {
 	for (unsigned char i = 0; i < 255; i++) {
@@ -74,16 +77,19 @@ void update_game(renderer* renderer) {
 
 void shutdown_game() {}
 
-int main(int argc, char* args[]) {
+int main() {
 	renderer core;
 	if (init_renderer(&core, 0, 2, "MyGame")) return 1;
+
+	drink = load_wav("../assets/drink.wav", &core);
+
 	run_render(&core);
 	shutdown_renderer(&core);
 	return 0;
 }
 ```
 Result:
-![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/example.png)
+![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/example.png)
 #### Run engine
 Define `SHOW_FPS` before including header for displaying fps instead of app name.  
 
@@ -96,29 +102,49 @@ Finally, release and free the `renderer` by using the `shutdown_renderer(rendere
 #### Functions
 
 ##### Callbacks:
-`input_game(SDL_Scancode key)` used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
-`update_game(renderer*)` used for processing graphics and is called every frame.   
-`shutdown_game()` used for free up resources in your game.   
+```c input_game(SDL_Scancode key, renderer* renderer)```   
+used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
+
+```c update_game(renderer*)```  
+used for processing graphics and is called every frame.   
+
+```c shutdown_game()```   
+used for free up resources in your game.   
 
 ##### Called function:   
-`draw_tile(renderer*, char, unsigned char*, long, long)` used for displaying and drawing tiles.   
+```c draw_tile(renderer*, char, unsigned char*, long, long)```   
+used for displaying and drawing tiles.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.   
 
-`draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)` used for displaying and drawing tiles relative to the center of the screen.   
+```c draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)```   
+used for displaying and drawing tiles relative to the center of the screen.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 The sixth and seventh arguments are the x and y coordinates of the camera.
 
-`print(renderer*, const char*, unsigned char*, long, long)` used for displaying text.   
+```c print(renderer*, const char*, unsigned char*, long, long)```   
+used for displaying text.   
 The second argument is a text to display.    
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 
+```c load_wav(const char*, renderer*)```
+used for loading sound in WAV format.
+The first argument is a path to file.
+Returns wav_sound*
+
+```c void play_wav(wav_sound*, renderer* core)```
+used for playing sound in WAV format.
+The first argument is a sound to play.
+
 ### TODO
 - [x] Added tile culling and camera support.
 - [x] Added print function.   
-~~Add support for sound.~~
+- [x] Added support for sound.
 - [ ] Add mouse support
+
+### Assets
+`assets/drink.wav` under CC0 license

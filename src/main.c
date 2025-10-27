@@ -1,7 +1,11 @@
 #define SHOW_FPS
 #include "core.h"
 
-void input_game(SDL_Scancode key) {}
+wav_sound *drink;
+
+void input_game(SDL_Scancode key, renderer* renderer) {
+	if (key == SDL_SCANCODE_E) play_wav(drink, renderer);
+}
 
 void update_game(renderer* renderer) {
 	for (unsigned char i = 0; i < 255; i++) {
@@ -18,9 +22,12 @@ void update_game(renderer* renderer) {
 
 void shutdown_game() {}
 
-int main(int argc, char* args[]) {
+int main() {
 	renderer core;
 	if (init_renderer(&core, 0, 2, "MyGame")) return 1;
+
+	drink = load_wav("../assets/drink.wav", &core);
+
 	run_render(&core);
 	shutdown_renderer(&core);
 	return 0;
