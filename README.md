@@ -1,4 +1,6 @@
 # Termlib
+[![GitHub last commit](https://img.shields.io/github/last-commit/ztry8/termlib)](https://github.com/ztry8/termlib/commits)
+[![License](https://img.shields.io/github/license/ztry8/termlib)](https://github.com/ztry8/termlib/blob/main/LICENSE)
 ## Lightweight and simple C99 library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/screenshots/3.png)
 
