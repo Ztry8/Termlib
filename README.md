@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/github/license/ztry8/termlib)](https://github.com/ztry8/termlib/blob/main/LICENSE)
 ## Lightweight and simple C99 library with a single header for terminal graphics
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/3.png)
+![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/1.PNG)
 
 ### About library
 
@@ -30,7 +31,7 @@ Yes, the library has been tested with C++ and works pretty well.
 Engine is based on SDL2.    
 You just need to copy the `src/core.h` file to your working directory and then link project with SDL2.   
 
-#### Linux
+#### Linux/MacOs
 Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
 ```
 git clone https://github.com/Ztry8/Termlib.git
@@ -102,41 +103,41 @@ Finally, release and free the `renderer` by using the `shutdown_renderer(rendere
 #### Functions
 
 ##### Callbacks:
-```c input_game(SDL_Scancode key, renderer* renderer)```   
+```input_game(SDL_Scancode key, renderer* renderer)```   
 used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
 
-```c update_game(renderer*)```  
+```update_game(renderer*)```  
 used for processing graphics and is called every frame.   
 
-```c shutdown_game()```   
+```shutdown_game()```   
 used for free up resources in your game.   
 
 ##### Called function:   
-```c draw_tile(renderer*, char, unsigned char*, long, long)```   
+```draw_tile(renderer*, char, unsigned char*, long, long)```   
 used for displaying and drawing tiles.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.   
 
-```c draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)```   
+```draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)```   
 used for displaying and drawing tiles relative to the center of the screen.   
 The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 The sixth and seventh arguments are the x and y coordinates of the camera.
 
-```c print(renderer*, const char*, unsigned char*, long, long)```   
+```print(renderer*, const char*, unsigned char*, long, long)```   
 used for displaying text.   
 The second argument is a text to display.    
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
 
-```c load_wav(const char*, renderer*)```
+```load_wav(const char*, renderer*)```   
 used for loading sound in WAV format.
 The first argument is a path to file.
 Returns wav_sound*
 
-```c void play_wav(wav_sound*, renderer* core)```
+```void play_wav(wav_sound*, renderer* core)```   
 used for playing sound in WAV format.
 The first argument is a sound to play.
 
