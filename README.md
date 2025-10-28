@@ -151,18 +151,15 @@ input_game(SDL_Scancode key, renderer* renderer)
 ```   
 Used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
 
-
 ```c
 update_game(renderer*)
 ```  
 Used for processing graphics and is called every frame.   
 
-
 ```c
 shutdown_game()
 ```   
 Used for free up resources in your game.   
-
 
 ##### Called function:   
 ```c
@@ -173,7 +170,6 @@ The second argument is a character to draw. Use a character enclosed in single q
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.   
 
-
 ```c
 draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)
 ```   
@@ -183,11 +179,10 @@ The third argument is color. You can also look at the names in the header.
 The fourth and fifth arguments are the x and y coordinates.
 The sixth and seventh arguments are the x and y coordinates of the camera.
 
-
 ```c
 print(renderer*, const char*, unsigned char*, long, long)
 ```   
-used for displaying text.   
+Used for displaying text.   
 The second argument is a text to display.    
 The third argument is color. You can also look at the names in the header.   
 The fourth and fifth arguments are the x and y coordinates.
@@ -195,14 +190,14 @@ The fourth and fifth arguments are the x and y coordinates.
 ```c
 load_wav(const char*, renderer*)
 ```   
-used for loading sound in WAV format.
+Used for loading sound in WAV format.
 The first argument is a path to file.
 Returns wav_sound*
 
 ```c
 void play_wav(wav_sound*, renderer* core)
 ```   
-used for playing sound in WAV format.
+Used for playing sound in WAV format.
 The first argument is a sound to play.
 
 ### TODO
@@ -212,4 +207,4 @@ The first argument is a sound to play.
 - [ ] Add mouse support
 
 ### Assets
-`assets/drink.wav` under CC0 license
+`assets/drink.wav` and font in `core.h` under CC0 license
