@@ -1,7 +1,7 @@
 # Termlib
 [![GitHub last commit](https://img.shields.io/github/last-commit/ztry8/termlib)](https://github.com/ztry8/termlib/commits)
 [![License](https://img.shields.io/github/license/ztry8/termlib)](https://github.com/ztry8/termlib/blob/main/LICENSE)
-## Lightweight and simple C/C++ library with a single header for terminal graphics written in C
+## Lightweight and simple Rust/C/C++ library with a single header for terminal graphics written in C
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/3.png)
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/blob/main/assets/1.PNG)
 
@@ -34,8 +34,13 @@ The library should be compatible with all platforms supported by SDL2.
 #### Does it work with C++?
 Yes, the library has been tested with C++ and works pretty well.
 
+#### Does it work with Rust?
+The library is fully tested with Rust   
+I’m even developing my own game using this library and Rust.
 
-### Building
+### [Building for Rust here](https://github.com/Ztry8/Termlib/blob/main/RustBuilding.md)
+
+### Building for C/C++
 
 #### Windows
 Engine is based on SDL2.    
