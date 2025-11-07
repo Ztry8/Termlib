@@ -1,14 +1,31 @@
 # Build your Rust-game on Termlib
 
 ## Installation
-Install all necessary tools and libs as written in this [section](https://github.com/Ztry8/Termlib/tree/main?tab=readme-ov-file#building-for-cc)   
-Additionaly you need [rustc and cargo](https://rust-lang.org/learn/get-started/)
+You need to have [rustc and cargo](https://rust-lang.org/learn/get-started/) and SDL2-dev packages installed
+
+### SDL2-dev for Windows
+Download [this archive](https://github.com/libsdl-org/SDL/releases/download/release-2.32.10/SDL2-devel-2.32.10-VC.zip) for the Visual Studio compiler (used by default), or [this one](https://github.com/libsdl-org/SDL/releases/download/release-2.32.10/SDL2-devel-2.32.10-mingw.zip) for MinGW
+
+After that, create a `devlibs` folder on your `C:` drive, then create an `SDL2` folder inside it   
+Unpack the archive and move the `include` and `lib` folders into `C:/devlibs/SDL2/`
 
 ## Setting up your environment 
+At the end of this guide, your project structure must be:
+```bash
+├── Cargo.lock
+├── Cargo.toml
+├── build.rs
+├── native
+│   ├── core.c
+│   └── core.h
+└── src
+    ├── bindings.rs
+    └── main.rs
+```
 
 ### 1 Step
 Firstly just create new project:
-```
+```bash
 cargo new awesome_game
 ```
 
@@ -39,8 +56,8 @@ Create `main.c` inside `native` folder and paste in it this content:
 Create `build.rs` in your project root and paste this code: 
 ```rust
 fn main() {
-    let path_include = "/opt/local/include";
-    let path_lib = "/opt/local/lib";
+    let path_include = "see below";
+    let path_lib = "see below";
 
     cc::Build::new()
         .file("native/core.c")
@@ -65,7 +82,36 @@ fn main() {
 }
 
 ```
-#### Please pay attention that you need to set up your library path
+**Make sure to set up your library path!**   
+There are default path for library:
+
+#### Windows
+(If you followed [the instructions](https://github.com/Ztry8/Termlib/blob/main/RustBuilding.md#windows) above)
+```rust
+let path_include = "C:/devlibs/include/";
+let path_lib = "C:/devlibs/lib";
+```
+
+#### Linux
+```rust
+let path_include = "/usr/include/";
+let path_lib = "/usr/lib";
+// let path_lib = "/usr/lib64";
+```
+
+#### MacOs
+
+Homebrew:
+```rust
+let path_include = "/opt/homebrew/include/";
+let path_lib = "/opt/homebrew/lib";
+```
+
+MacPorts:
+```rust
+let path_include = "/opt/local/include";
+let path_lib = "/opt/local/lib";
+```
 
 ### 5 Step
 Paste in your `src/main.rs`:
@@ -121,12 +167,14 @@ fn main() {
 }
 ```
 
-### 6 Step
+## Running
 Just run:
 ```bash
 cargo run
 ```
-You will see many warnings but don't worry it's normal
+
+You might see a lot of warnings during compilation,   
+but don’t worry, that’s normal
 
 Result:
-![screensht](https://github.com/Ztry8/ASCII-Engine/raw/main/assets/example.png)
+![screenshot](https://github.com/Ztry8/ASCII-Engine/raw/main/assets/example.png)
