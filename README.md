@@ -18,10 +18,11 @@ The font used for graphics is built into the header code.
 #### Rendering
 The library uses batching for rendering tiles, tile culling has been implemented.   
 The library has VSync only as a frame rate cap.   
-The graphics API provided by SDL2 (opengl or direct2d, etc.)
+The graphics API provided by SDL2 (opengl or direct2d, etc.)   
+Software (CPU) rendering is used as a fallback.
 
 #### Input
-The library uses the keyboard as input, and there are plans to add a mouse support in the future.
+The library uses the keyboard and mouse as input.
 
 #### Sounds
 The library supports loading sounds from `.wav` files and playing them.
@@ -109,8 +110,13 @@ and if you use sounds in your game, you'll also need to distribute them along wi
 
 wav_sound *drink;
 
-void input_game(SDL_Scancode key, renderer* renderer) {
+void keyboard_game(SDL_Scancode key, renderer* renderer) {
 	if (key == SDL_SCANCODE_E) play_wav(drink, renderer);
+}
+
+void mouse_game(renderer* renderer, signed x, signed y, char button) {
+	if (button == 0) draw_tile(renderer, '@', BRIGHT_YELLOW, x, y);
+	else draw_tile(renderer, '@', MAGENTA, x, y);
 }
 
 void update_game(renderer* renderer) {
@@ -130,7 +136,7 @@ void shutdown_game() {}
 
 int main() {
 	renderer core;
-	if (init_renderer(&core, 0, 2, "MyGame")) return 1;
+	if (init_renderer(&core, 1, 2, "MyGame")) return 1;
 
 	drink = load_wav("../assets/drink.wav", &core);
 
@@ -146,7 +152,7 @@ Define `SHOW_FPS` before including header for displaying fps instead of app name
 
 In the main files, you need to create and initialize the `Core` using the `init_renderer()` function, which takes a `renderer*`, `vsync`, `scale` as an arguments.   
 `scale` = 1: 640x360 resolution,   
-`scale` = 2: 1280x720 resolution, etc. 
+`scale` = 2: 1280x720 resolution, etc.    
 Then, activate and run the `renderer` using the `run_render(renderer*)` function.   
 Finally, release and free the `renderer` by using the `shutdown_renderer(renderer*)` function.
 
@@ -154,9 +160,20 @@ Finally, release and free the `renderer` by using the `shutdown_renderer(rendere
 
 ##### Callbacks:
 ```c
-input_game(SDL_Scancode key, renderer* renderer)
+keyboard_game(SDL_Scancode key, renderer* renderer)
 ```   
-Used for processing player's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
+Used for processing keyboards's input, see [SDL_Scancode](https://wiki.libsdl.org/SDL2/SDL_Scancode)   
+
+```c
+mouse_game(renderer* renderer, int x, int y, char button)
+```   
+Used for processing mouse's input, x and y is coordinates of cursor,
+| char button value  |   meaning    |
+| -------------      | --------     |
+| 0 | No button was pressed         |
+| 1 | Left button was pressed       | 
+| 2 | Right button was pressed      | 
+| 3 | Middle button was pressed     | 
 
 ```c
 update_game(renderer*)
@@ -170,20 +187,20 @@ Used for free up resources in your game.
 
 ##### Called function:   
 ```c
-draw_tile(renderer*, char, unsigned char*, long, long)
+draw_tile(renderer*, char, unsigned char*, int, int)
 ```   
 Used for displaying and drawing tiles.   
-The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
-The third argument is color. You can also look at the names in the header.   
+The second argument is a character to draw. '#' or '@' for example.   
+The third argument is color. You can also look at the names in the header or make up own.   
 The fourth and fifth arguments are the x and y coordinates.   
 
 ```c
-draw_tile_camera(renderer*, char, unsigned char*, long, long, long, long)
+draw_tile_camera(renderer*, char, unsigned char*, int, int, int, int)
 ```   
 Used for displaying and drawing tiles relative to the center of the screen.   
-The second argument is a character to draw. Use a character enclosed in single quotes, not a number code!   
-The third argument is color. You can also look at the names in the header.   
-The fourth and fifth arguments are the x and y coordinates.
+The second argument is a character to draw. '#' or '@' for example.   
+The third argument is color. You can also look at the names in the header or make up own.   
+The fourth and fifth arguments are the x and y coordinates.   
 The sixth and seventh arguments are the x and y coordinates of the camera.
 
 ```c
@@ -191,7 +208,7 @@ print(renderer*, const char*, unsigned char*, long, long)
 ```   
 Used for displaying text.   
 The second argument is a text to display.    
-The third argument is color. You can also look at the names in the header.   
+The third argument is color. You can also look at the names in the header or make up own.   
 The fourth and fifth arguments are the x and y coordinates.
 
 ```c
@@ -211,7 +228,13 @@ The first argument is a sound to play.
 - [x] Added tile culling and camera support.
 - [x] Added print function.   
 - [x] Added support for sound.
-- [ ] Add mouse support
+- [x] Added mouse support
+- [ ] Add feature for using own font
+
+### Contributing
+Any issues and pull requests are welcome!   
+Feel free to suggest improvements, report bugs, or add new features.   
+Please keep in mind the main goal of this project: a single header and simplicity.
 
 ### Assets
 `assets/drink.wav` and font in `core.h` under CC0 license
