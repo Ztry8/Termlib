@@ -47,7 +47,7 @@ At the end of this guide, your project structure must be:
 ```
 
 ### 1 Step
-Firstly, just create new project:
+Firstly, just create a new project:
 ```bash
 cargo new awesome_game
 ```
