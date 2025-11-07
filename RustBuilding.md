@@ -9,6 +9,29 @@ Download [this archive](https://github.com/libsdl-org/SDL/releases/download/rele
 After that, create a `devlibs` folder on your `C:` drive, then create an `SDL2` folder inside it   
 Unpack the archive and move the `include` and `lib` folders into `C:/devlibs/SDL2/`
 
+### SDL2-dev for Linux 
+Debian-based:
+```bash
+sudo apt update
+sudo apt install libsdl2-dev
+```
+RHEL-based:
+```bash
+sudo dnf check-update
+sudo dnf install SDL2-devel
+```
+Arch-based:
+```bash
+sudo pacman -Sy
+sudo pacman -S sdl2
+```
+
+### SDL2-dev for MacOs
+```bash
+sudo port selfupdate
+sudo port install libsdl2
+```
+
 ## Setting up your environment 
 At the end of this guide, your project structure must be:
 ```bash
@@ -24,7 +47,7 @@ At the end of this guide, your project structure must be:
 ```
 
 ### 1 Step
-Firstly just create new project:
+Firstly, just create new project:
 ```bash
 cargo new awesome_game
 ```
@@ -86,10 +109,10 @@ fn main() {
 There are default path for library:
 
 #### Windows
-(If you followed [the instructions](https://github.com/Ztry8/Termlib/blob/main/RustBuilding.md#windows) above)
+(If you followed [the instructions](https://github.com/Ztry8/Termlib/blob/main/RustBuilding.md#sdl2-dev-for-windows) above)
 ```rust
-let path_include = "C:/devlibs/include/";
-let path_lib = "C:/devlibs/lib";
+let path_include = "C:/devlibs/";
+let path_lib = "C:/devlibs/";
 ```
 
 #### Linux
