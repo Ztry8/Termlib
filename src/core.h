@@ -1063,7 +1063,8 @@ typedef struct Core {
   SDL_AudioSpec* spec;
 } renderer;
 
-void input_game(SDL_Scancode, renderer*);
+void keyboard_game(SDL_Scancode, renderer*);
+void mouse_game(renderer*, signed, signed, char);
 void update_game(renderer*);
 void shutdown_game(void);
 
@@ -1129,10 +1130,14 @@ void play_wav(wav_sound *sound, renderer* core) {
     SDL_CloseAudio();
 }
 
+static char global_scale = 0;
+
 unsigned char init_renderer(renderer* core, char vsync, char scale, const char* name) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
 	
+  global_scale = scale;
+
 	SDL_ShowCursor(1);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	SDL_SetHint(SDL_HINT_APP_NAME, name);
@@ -1146,8 +1151,12 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
     return display_error("Window couldn't be created!\nError: %s");
 
 	core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
-	if (core->renderer == NULL) 
-    return display_error("Renderer couldn't be created!\nError: %s");
+
+	if (core->renderer == NULL) {
+    core->renderer = SDL_CreateRenderer(core->window, -1, SDL_RENDERER_SOFTWARE);
+
+    if (core->renderer == NULL) return display_error("Renderer couldn't be created!\nError: %s");
+  }
 
 	SDL_RenderSetScale(core->renderer, scale, scale);
 	
@@ -1165,7 +1174,7 @@ unsigned char init_renderer(renderer* core, char vsync, char scale, const char* 
 	return 0;
 }
 
-void draw_tile_camera(renderer* core, char symbol, const unsigned char* color, long x, long y, long cx, long cy) {
+void draw_tile_camera(renderer* core, char symbol, const unsigned char* color, signed x, signed y, signed cx, signed cy) {
   long real_x = x + WIDTH / 2 - cx, real_y = y + HEIGHT / 2 - cy;
   if (real_x < WIDTH && real_x >= 0 && real_y < HEIGHT && real_y >= 0) {
     SDL_Rect part;
@@ -1181,7 +1190,7 @@ void draw_tile_camera(renderer* core, char symbol, const unsigned char* color, l
   }
 }
 
-void draw_tile(renderer* core, char symbol, const unsigned char* color, long x, long y) {
+void draw_tile(renderer* core, char symbol, const unsigned char* color, signed x, signed y) {
   if (x < WIDTH && x >= 0 && y < HEIGHT && y >= 0) {
     SDL_Rect part;
     part.x = TILE_W * (symbol - 32); part.y = 0;
@@ -1196,7 +1205,7 @@ void draw_tile(renderer* core, char symbol, const unsigned char* color, long x, 
   }
 }
 
-void print(renderer* core, const char* text, const unsigned char* color, long x, long y) {
+void print(renderer* core, const char* text, const unsigned char* color, signed x, signed y) {
   for (int i = 0; i < strlen(text); i++) {
     draw_tile(core, text[i], color, x + i, y);
   }
@@ -1208,19 +1217,43 @@ void run_render(renderer* core) {
     #ifdef SHOW_FPS
 		  unsigned long long start = SDL_GetPerformanceCounter();
     #endif
+
+    char mouse_button = 0;
+
 		while (SDL_PollEvent(&e)) { 
 			if (e.type == SDL_QUIT) quit = 1; 
-			if (e.type == SDL_KEYDOWN) input_game(e.key.keysym.scancode, core);
+			if (e.type == SDL_KEYDOWN) keyboard_game(e.key.keysym.scancode, core);
+      if (e.type == SDL_MOUSEBUTTONDOWN) {
+          switch (e.button.button) {
+              case SDL_BUTTON_LEFT:
+                  mouse_button = 1;
+                  break;
+              case SDL_BUTTON_RIGHT:
+                  mouse_button = 2;
+                  break;
+              case SDL_BUTTON_MIDDLE:
+                  mouse_button = 3;
+                  break;
+              default: 
+                break;
+          }
+      }
 		}
 
+    signed x, y;
+    SDL_GetMouseState(&x, &y);
+
 		SDL_RenderClear(core->renderer);
+
+    mouse_game(core, x / (signed)global_scale / TILE_W, y / (signed)global_scale / TILE_H, mouse_button);
 		update_game(core);
+
 		SDL_RenderPresent(core->renderer);
 
     #ifdef SHOW_FPS
       unsigned long long end = SDL_GetPerformanceCounter();
       float elapsed = 1.f / ((end - start) / (float)SDL_GetPerformanceFrequency());
-      char buffer[128]; sprintf(buffer, "Current FPS: %0.0f", elapsed);
+      char buffer[128]; sprintf(buffer, "Current FPS: %d", (int)elapsed);
       SDL_SetWindowTitle(core->window, buffer);
     #endif
 	}
