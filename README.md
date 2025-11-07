@@ -53,7 +53,8 @@ and if you use sounds in your game, you'll also need to distribute them along wi
 If you have chosen the dynamic linking type with SDL2, place [this .dll for x86](https://github.com/libsdl-org/SDL/releases/download/release-2.32.10/SDL2-2.32.10-win32-x86.zip) or [this for x64](https://github.com/libsdl-org/SDL/releases/download/release-2.32.10/SDL2-2.32.10-win32-x64.zip) in the same folder with .exe
 
 #### Linux/MacOs
-Make sure you have `git`, `cmake`, `ninja` or `make`, `sdl2-dev-package` installed.
+Make sure you have `git`, `cmake`, `ninja` or `make`, [`sdl2-dev-package`](https://github.com/Ztry8/Termlib/blob/main/RustBuilding.md#sdl2-dev-for-linux) installed.
+
 ```
 git clone https://github.com/Ztry8/Termlib.git
 mkdir build/
