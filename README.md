@@ -230,6 +230,7 @@ The first argument is a sound to play.
 - [x] Added support for sound.
 - [x] Added mouse support
 - [ ] Add feature for using own font
+- [ ] Add cross-compiling
 
 ### Contributing
 Any issues and pull requests are welcome!   
