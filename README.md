@@ -143,8 +143,8 @@ Result:
 Define `SHOW_FPS` before including header for displaying fps instead of app name.  
 
 In the main files, you need to create and initialize the `Core` using the `init_renderer()` function, which takes a `renderer*`, `vsync`, `scale` as an arguments.   
-`scale` = 1: 640x344 resolution,   
-`scale` = 2: 1280x688 resolution, etc. 
+`scale` = 1: 640x360 resolution,   
+`scale` = 2: 1280x720 resolution, etc. 
 Then, activate and run the `renderer` using the `run_render(renderer*)` function.   
 Finally, release and free the `renderer` by using the `shutdown_renderer(renderer*)` function.
 
