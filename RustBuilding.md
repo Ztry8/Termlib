@@ -159,7 +159,7 @@ pub unsafe extern "C" fn keyboard_game(key: SDL_Scancode, renderer: *mut rendere
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn mouse_game(key: SDL_Scancode, renderer: *mut renderer, x: i32, y: i32, button: u8) {
+pub unsafe extern "C" fn mouse_game(renderer: *mut renderer, x: i32, y: i32, button: u8) {
     
 }
 
