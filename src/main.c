@@ -17,12 +17,12 @@ void update_game(renderer* renderer) {
 		draw_tile(renderer, i, BRIGHT_YELLOW, 15 + i%16, i/16);
 	}
 
-	// print(renderer, "Hello World!", BLUE, 0, 0);
-	// print(renderer, "Hello World!", GREEN, 0, 1);
-	// print(renderer, "Hello World!", CYAN, 0, 2);
-	// print(renderer, "Hello World!", RED, 0, 3);
-	// print(renderer, "Hello World!", MAGENTA, 0, 4);
-	// print(renderer, "Hello World!", BROWN, 0, 5);
+	print(renderer, "Hello World!", BLUE, 0, 0);
+	print(renderer, "Hello World!", GREEN, 0, 1);
+	print(renderer, "Hello World!", CYAN, 0, 2);
+	print(renderer, "Hello World!", RED, 0, 3);
+	print(renderer, "Hello World!", MAGENTA, 0, 4);
+	print(renderer, "Hello World!", BROWN, 0, 5);
 }
 
 void shutdown_game() {}
