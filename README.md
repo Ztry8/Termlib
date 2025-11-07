@@ -57,6 +57,7 @@ Make sure you have `git`, `cmake`, `ninja` or `make`, [`sdl2-dev-package`](https
 
 ```
 git clone https://github.com/Ztry8/Termlib.git
+cd Termlib/
 mkdir build/
 cd build/
 ```
