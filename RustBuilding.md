@@ -63,13 +63,13 @@ edition = "2024"
 [dependencies]
 
 [build-dependencies]
-cc = "*"
-bindgen = "*"
+cc = "1.2.45"
+bindgen = "0.72.1"
 ```
 
 ### 3 Step
-Create `native` folder and paste [`library.h`](https://github.com/Ztry8/Termlib/blob/main/src/core.h) there,   
-Create `main.c` inside `native` folder and paste in it this content:
+Create `native` folder and paste [`core.h`](https://github.com/Ztry8/Termlib/blob/main/src/core.h) there,   
+Create `core.c` inside `native` folder and paste in it this content:
 ```c
 #include "core.h"
 ```
@@ -153,16 +153,20 @@ macro_rules! c_str {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn input_game(key: SDL_Scancode, renderer: *mut renderer) {
+pub unsafe extern "C" fn keyboard_game(key: SDL_Scancode, renderer: *mut renderer) {
     if key == SDL_Scancode_SDL_SCANCODE_E {
     }
 }
 
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn mouse_game(key: SDL_Scancode, renderer: *mut renderer, x: i32, y: i32, button: u8) {
+    
+}
 
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn update_game(renderer: *mut renderer) {
     for i in 0..127 {
-        draw_tile(renderer, i, BRIGHT_YELLOW.as_ptr(), (15 + (i % 16)) as i64, (i / 16) as i64);
+        draw_tile(renderer, i, BRIGHT_YELLOW.as_ptr(), (15 + (i % 16)) as i32, (i / 16) as i32);
     }
 
     print(renderer, c_str!("Hello World!"), BLUE.as_ptr(), 0, 0);
@@ -201,3 +205,5 @@ but don’t worry, that’s normal
 
 Result:
 ![screenshot](https://github.com/Ztry8/ASCII-Engine/raw/main/assets/example.png)
+
+Good luck with your project!
