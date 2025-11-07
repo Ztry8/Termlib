@@ -1,7 +1,7 @@
 # Build your Rust-game on Termlib
 
 ## Installation
-Install all necessary tools and libs as written in this [section](https://github.com/Ztry8/Termlib/tree/main?tab=readme-ov-file#building)   
+Install all necessary tools and libs as written in this [section](https://github.com/Ztry8/Termlib/tree/main?tab=readme-ov-file#building-for-cc)   
 Additionaly you need [rustc and cargo](https://rust-lang.org/learn/get-started/)
 
 ## Setting up your environment 
