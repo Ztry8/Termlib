@@ -79,14 +79,15 @@ Create `core.c` inside `native` folder and paste in it this content:
 Create `build.rs` in your project root and paste this code: 
 ```rust
 fn main() {
-    let path_include = "see below";
-    let path_lib = "see below";
+    let path_include = "/opt/local/include";
+    let path_lib = "/opt/local/lib";
 
     cc::Build::new()
         .file("native/core.c")
         .include("native")
         .include(path_include)
         //.define("SHOW_FPS", None)
+        .flag_if_supported("-w")
         .compile("core");
 
     println!("cargo:rustc-link-search=native={}", path_lib);
@@ -102,8 +103,11 @@ fn main() {
     bindings
         .write_to_file("src/bindings.rs")
         .expect("Couldn't write bindings!");
-}
 
+    let mut content = std::fs::read_to_string("src/bindings.rs").unwrap();
+    content = format!("#![allow(warnings)]\n{}", content);
+    std::fs::write("src/bindings.rs", content).unwrap();
+}
 ```
 **Make sure to set up your library path!**   
 There are default path for library:
