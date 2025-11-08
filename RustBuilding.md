@@ -79,8 +79,8 @@ Create `core.c` inside `native` folder and paste in it this content:
 Create `build.rs` in your project root and paste this code: 
 ```rust
 fn main() {
-    let path_include = "/opt/local/include";
-    let path_lib = "/opt/local/lib";
+    let path_include = "see below";
+    let path_lib = "see below";
 
     cc::Build::new()
         .file("native/core.c")
