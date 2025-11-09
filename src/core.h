@@ -1065,7 +1065,7 @@ typedef struct Core {
 
 void keyboard_game(SDL_Scancode, renderer*);
 void mouse_game(renderer*, signed, signed, char);
-void update_game(renderer*);
+void update_game(renderer*, float);
 void shutdown_game(void);
 
 static unsigned char display_error(const char* error_msg) {
@@ -1211,12 +1211,12 @@ void print(renderer* core, const char* text, const unsigned char* color, signed 
   }
 }
 
+double frame_time = 0.0;
+
 void run_render(renderer* core) {
 	SDL_Event e; char quit = 0;
 	while (!quit) {
-    #ifdef SHOW_FPS
-		  unsigned long long start = SDL_GetPerformanceCounter();
-    #endif
+	unsigned long long start = SDL_GetPerformanceCounter();
 
     char mouse_button = 0;
 
@@ -1246,14 +1246,15 @@ void run_render(renderer* core) {
 		SDL_RenderClear(core->renderer);
 
     mouse_game(core, x / (signed)global_scale / TILE_W, y / (signed)global_scale / TILE_H, mouse_button);
-		update_game(core);
+		update_game(core, (float)frame_time);
 
 		SDL_RenderPresent(core->renderer);
 
+    unsigned long long end = SDL_GetPerformanceCounter();
+    frame_time = (end - start) / (double)SDL_GetPerformanceFrequency();
+		
     #ifdef SHOW_FPS
-      unsigned long long end = SDL_GetPerformanceCounter();
-      float elapsed = 1.f / ((end - start) / (float)SDL_GetPerformanceFrequency());
-      char buffer[128]; sprintf(buffer, "Current FPS: %d", (int)elapsed);
+      char buffer[128]; sprintf(buffer, "Current FPS: %d", (int)(1.f / frame_time));
       SDL_SetWindowTitle(core->window, buffer);
     #endif
 	}
@@ -1267,3 +1268,4 @@ void shutdown_renderer(renderer* core) {
 	SDL_DestroyWindow(core->window);
 	SDL_Quit();
 }
+
