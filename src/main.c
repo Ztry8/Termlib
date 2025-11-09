@@ -12,7 +12,7 @@ void mouse_game(renderer* renderer, signed x, signed y, char button) {
 	else draw_tile(renderer, '@', MAGENTA, x, y);
 }
 
-void update_game(renderer* renderer) {
+void update_game(renderer* renderer, float frame_time) {
 	for (unsigned char i = 0; i < 255; i++) {
 		draw_tile(renderer, i, BRIGHT_YELLOW, 15 + i%16, i/16);
 	}
