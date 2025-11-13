@@ -1219,39 +1219,28 @@ double frame_time = 0.0;
 
 void run_render(renderer* core) {
 	SDL_Event e; char quit = 0;
+
 	while (!quit) {
 	unsigned long long start = SDL_GetPerformanceCounter();
-
-    char mouse_button = 0;
 
 		while (SDL_PollEvent(&e)) { 
 			if (e.type == SDL_QUIT) quit = 1; 
 			if (e.type == SDL_KEYDOWN) keyboard_game(e.key.keysym.scancode, core);
-      if (e.type == SDL_MOUSEBUTTONDOWN) {
-          switch (e.button.button) {
-              case SDL_BUTTON_LEFT:
-                  mouse_button = 1;
-                  break;
-              case SDL_BUTTON_RIGHT:
-                  mouse_button = 2;
-                  break;
-              case SDL_BUTTON_MIDDLE:
-                  mouse_button = 3;
-                  break;
-              default: 
-                break;
-          }
-      }
 		}
 
     signed x, y;
-    SDL_GetMouseState(&x, &y);
+    int mouse_buttons = SDL_GetMouseState(&x, &y);
+
+    if (mouse_buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) mouse_buttons = 1;
+    else if (mouse_buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) mouse_buttons = 2;
+    else if (mouse_buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) mouse_buttons = 3;
+    else mouse_buttons = 0;
 
     #ifndef FLASH
 		SDL_RenderClear(core->renderer);
     #endif
 
-    mouse_game(core, x / (signed)global_scale / TILE_W, y / (signed)global_scale / TILE_H, mouse_button);
+    mouse_game(core, x / (signed)global_scale / TILE_W, y / (signed)global_scale / TILE_H, mouse_buttons);
 		update_game(core, (float)frame_time);
 
 		SDL_RenderPresent(core->renderer);
@@ -1274,4 +1263,3 @@ void shutdown_renderer(renderer* core) {
 	SDL_DestroyWindow(core->window);
 	SDL_Quit();
 }
-
