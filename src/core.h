@@ -1211,6 +1211,10 @@ void print(renderer* core, const char* text, const unsigned char* color, signed 
   }
 }
 
+void clear_screen(renderer* core) {
+	SDL_RenderClear(core->renderer);
+}
+
 double frame_time = 0.0;
 
 void run_render(renderer* core) {
@@ -1243,7 +1247,9 @@ void run_render(renderer* core) {
     signed x, y;
     SDL_GetMouseState(&x, &y);
 
+    #ifndef FLASH
 		SDL_RenderClear(core->renderer);
+    #endif
 
     mouse_game(core, x / (signed)global_scale / TILE_W, y / (signed)global_scale / TILE_H, mouse_button);
 		update_game(core, (float)frame_time);
