@@ -1217,6 +1217,12 @@ void clear_screen(renderer* core) {
 
 double frame_time = 0.0;
 
+#ifdef SHOW_FPS
+float fps = 0.0f;
+int frame_count = 0;
+float time_accumulator = 0.0f;
+#endif
+
 void run_render(renderer* core) {
 	SDL_Event e; char quit = 0;
 
@@ -1249,7 +1255,16 @@ void run_render(renderer* core) {
     frame_time = (end - start) / (double)SDL_GetPerformanceFrequency();
 		
     #ifdef SHOW_FPS
-      char buffer[128]; sprintf(buffer, "Current FPS: %d", (int)(1.f / frame_time));
+		frame_count++;
+    	time_accumulator += frame_time;
+
+	    if (time_accumulator >= 1.0f) {
+	        fps = frame_count / time_accumulator;
+	        frame_count = 0;
+	        time_accumulator = 0.0f;
+	    }
+		
+      char buffer[128]; sprintf(buffer, "Current FPS: %d", (int)fps);
       SDL_SetWindowTitle(core->window, buffer);
     #endif
 	}
@@ -1263,3 +1278,4 @@ void shutdown_renderer(renderer* core) {
 	SDL_DestroyWindow(core->window);
 	SDL_Quit();
 }
+
