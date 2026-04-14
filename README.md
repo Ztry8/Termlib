@@ -28,7 +28,7 @@ The library uses the keyboard and mouse as input.
 The library supports loading sounds from `.wav` files and playing them.
 
 #### What platforms does the library work on?
-I tested it on Windows 10, Debian 12, and macOS 10.13,   
+I tested it on Windows 10, Debian 12, macOS 10.13 and macOS 12.7,   
 and all functions worked correctly across these platforms.   
 The library should be compatible with all platforms supported by SDL2.
 
