@@ -1032,6 +1032,9 @@ static const struct {
 #define WIDTH 80
 #define HEIGHT 45
 
+// maximum number of simultaneous sounds
+#define MAX_SOUNDS 16
+
 const unsigned char BLACK[3] = { 0, 0, 0 };		
 const unsigned char BLUE[3] = { 0, 0, 170 };	
 const unsigned char GREEN[3] = { 0, 170, 0 };	
@@ -1054,13 +1057,21 @@ typedef struct {
     unsigned length;
     unsigned char *pos;
     char playing;
+    char converted;
 } wav_sound;
+
+typedef struct {
+    wav_sound *sounds[MAX_SOUNDS];
+    int count;
+    SDL_AudioSpec spec;
+    SDL_AudioDeviceID device;
+} audio_mixer;
 
 typedef struct Core {
 	SDL_Window* window;     
 	SDL_Renderer* renderer; 
 	SDL_Texture* gfx;     
-  SDL_AudioSpec* spec;
+  audio_mixer mixer;
 } renderer;
 
 void keyboard_game(SDL_Scancode, renderer*);
@@ -1076,58 +1087,113 @@ static unsigned char display_error(const char* error_msg) {
 }
 
 void audio_callback(void *userdata, Uint8 *stream, int len) {
-    wav_sound *sound = (wav_sound *)userdata;
+    renderer *core = (renderer *)userdata;
+    SDL_memset(stream, 0, len);
+    
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        wav_sound *s = core->mixer.sounds[i];
+        if (!s || !s->playing) continue;
 
-    if (!sound->playing) {
-        SDL_memset(stream, 0, len);
-        return;
-    }
+        unsigned remaining = s->length - (s->pos - s->buffer);
+        unsigned to_copy = (len > remaining) ? remaining : len;
 
-    unsigned remaining = sound->length - (sound->pos - sound->buffer);
-    unsigned to_copy = (len > remaining) ? remaining : len;
+        SDL_MixAudioFormat(stream, s->pos, core->mixer.spec.format, to_copy, SDL_MIX_MAXVOLUME);
+        s->pos += to_copy;
 
-    SDL_memcpy(stream, sound->pos, to_copy);
-    sound->pos += to_copy;
-
-    if (sound->pos - sound->buffer >= sound->length) {
-      sound->pos = sound->buffer; 
-      sound->playing = 0;
-    }
-
-    if (to_copy < len) {
-        SDL_memset(stream + to_copy, 0, len - to_copy);
+        if (s->pos - s->buffer >= s->length) {
+            s->pos = s->buffer;
+            s->playing = 0;
+        }
     }
 }
 
-wav_sound *load_wav(const char *filename, renderer* core) {
+wav_sound *load_wav(const char *filename, renderer *core) {
     wav_sound *sound = malloc(sizeof(wav_sound));
+    if (!sound) return NULL;
 
-    if (!sound || SDL_LoadWAV(filename, core->spec, &sound->buffer, &sound->length) == NULL) {
-        display_error("Sound couldn't be loaded!\nError: %s");
+    SDL_AudioSpec file_spec;
+    Uint8 *buf; Uint32 len;
+
+    if (SDL_LoadWAV(filename, &file_spec, &buf, &len) == NULL) {
         free(sound);
+        return NULL;
     }
 
-    sound->playing = 0;
+    SDL_AudioCVT cvt;
+    if (SDL_BuildAudioCVT(&cvt,
+        file_spec.format, file_spec.channels, file_spec.freq,
+        core->mixer.spec.format, core->mixer.spec.channels, core->mixer.spec.freq) > 0)
+    {
+        cvt.buf = malloc(len * cvt.len_mult);
+        cvt.len = len;
+        SDL_memcpy(cvt.buf, buf, len);
+        SDL_ConvertAudio(&cvt);
+        SDL_FreeWAV(buf);
+        sound->buffer = cvt.buf;
+        sound->length = cvt.len_cvt;
+        sound->converted = 1;
+    } else {
+        sound->converted = 0;
+        sound->buffer = buf;
+        sound->length = len;
+    }
+
     sound->pos = sound->buffer;
-    core->spec->callback = audio_callback;
-    core->spec->userdata = sound;
+    sound->playing = 0;
+
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        if (!core->mixer.sounds[i]) {
+            core->mixer.sounds[i] = sound;
+            break;
+        }
+    }
 
     return sound;
 }
 
-void play_wav(wav_sound *sound, renderer* core) {
-    if (SDL_OpenAudio(core->spec, NULL) < 0) {
-        display_error("Sound couldn't be played!\nError: %s");
-        return;
+void play_wav(wav_sound *sound, renderer *core) {
+    SDL_LockAudioDevice(core->mixer.device);
+    sound->pos = sound->buffer;
+    sound->playing = 1;
+    SDL_UnlockAudioDevice(core->mixer.device);
+}
+
+void free_wav(wav_sound *sound, renderer *core) {
+    SDL_LockAudioDevice(core->mixer.device);
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        if (core->mixer.sounds[i] == sound) {
+            core->mixer.sounds[i] = NULL;
+            break;
+        }
     }
     
-    SDL_PauseAudio(0); 
-    while (sound->playing) {
-        SDL_Delay(1);
-    }
+    SDL_UnlockAudioDevice(core->mixer.device);
+    if (!sound->converted) SDL_FreeWAV(sound->buffer);
+    else free(sound->buffer);
+    free(sound);
+}
 
-    sound->playing = 1;
-    SDL_CloseAudio();
+unsigned char init_audio(renderer *core) {
+    SDL_memset(&core->mixer, 0, sizeof(core->mixer));
+    core->mixer.spec.freq = 44100;
+    core->mixer.spec.format = AUDIO_S16SYS;
+    core->mixer.spec.channels = 2;
+    core->mixer.spec.samples = 512;
+    core->mixer.spec.userdata = core; 
+    core->mixer.spec.callback = audio_callback;
+
+    core->mixer.device = SDL_OpenAudioDevice(NULL, 0, &core->mixer.spec, &core->mixer.spec, 0);
+    if (core->mixer.device == 0) return 1;
+
+    SDL_PauseAudioDevice(core->mixer.device, 0);
+    return 0;
+}
+
+void shutdown_audio(renderer *core) {
+    SDL_CloseAudioDevice(core->mixer.device);
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        if (core->mixer.sounds[i]) free_wav(core->mixer.sounds[i], core);
+    }
 }
 
 static char global_scale = 0;
@@ -1135,6 +1201,9 @@ static char global_scale = 0;
 unsigned char init_renderer(renderer* core, char vsync, char scale, const char* name) {
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO)) 
     return display_error("SDL2 couldn't initialize!\nError: %s");
+
+  if (init_audio(core)) 
+    return display_error("Audio device couldn't be opened!\nError: %s");
 	
   global_scale = scale;
 
@@ -1273,6 +1342,7 @@ void run_render(renderer* core) {
 
 void shutdown_renderer(renderer* core) {
 	shutdown_game();
+  shutdown_audio(core);
 	SDL_DestroyTexture(core->gfx);
 	SDL_DestroyRenderer(core->renderer);
 	SDL_DestroyWindow(core->window);
